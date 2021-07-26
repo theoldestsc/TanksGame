@@ -1,21 +1,9 @@
 #include <SDL2/SDL_image.h>
+#include "DataStructures.h"
 #define WIDTH 512
 #define HEIGHT 384
 
-enum Direction 
-{
-    NONE,
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT
-};
 
-struct Vector2 
-{ 
-    float x; 
-    float y; 
-};
 
 //TODO: Make global object - Game Object, Tank inherits some properties (Think about it)
 class Tank

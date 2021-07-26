@@ -92,29 +92,17 @@ void Game::ProcessInput()
     const Uint8* state = SDL_GetKeyboardState(NULL);
     //if escape is pressed, also end loop
     if(state[SDL_SCANCODE_ESCAPE])
-    {
         mIsRunning = false;
-    }
     else if(state[SDL_SCANCODE_W])
-    {
         tank_obj->change_direction(Direction::UP);
-    }
     else if(state[SDL_SCANCODE_S])
-    {
         tank_obj->change_direction(Direction::DOWN);
-    }
     else if(state[SDL_SCANCODE_D])
-    {
         tank_obj->change_direction(Direction::RIGHT);
-    }
     else if(state[SDL_SCANCODE_A])
-    {    
         tank_obj->change_direction(Direction::LEFT);
-    }
     else if(state[SDL_SCANCODE_SPACE])
-    {    
         SDL_Log("Create a Bullet\n");
-    }
 }
 
 void Game::UpdateGame()

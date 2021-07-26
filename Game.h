@@ -24,9 +24,9 @@ class Game
         void UpdateGame();
         void GenerateOutput();
         SDL_Window* mWindow;
+        SDL_Renderer* mRenderer;
+
         bool mIsRunning;
         Uint32 mTicksCount;
         Tank* tank_obj;
-
-        SDL_Renderer* mRenderer;
 };
