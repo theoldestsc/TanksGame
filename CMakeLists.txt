@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.7)
+project(Game)
+find_package(SDL2 REQUIRED)
+find_package(SDL_image REQUIRED)
+if(NOT SDL_IMAGE_FOUND)
+	message("SDL2IMAGE NOT FOUND")
+	return()
+endif()
+if(NOT SDL2_FOUND)
+	message("SDL2 NOT FOUND")
+	return()
+else()
+	set(CMAKE_CXX_FLAGS "-g")
+	include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
+
+	set(SOURCE_EXE main.cpp)
+	set(SOURCE_LIB Game.cpp)
+	set(SOURCE_LIB_TANK Tank.cpp)
+	
+	add_library(Game STATIC ${SOURCE_LIB})
+	add_library(Tank STATIC ${SOURCE_LIB_TANK})
+
+	add_executable(main ${SOURCE_EXE})
+	
+	target_link_libraries(main Game Tank ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+endif()
