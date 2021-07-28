@@ -1,11 +1,6 @@
 #include "Game.h"
 
 
-
-const float tankH = HEIGHT/25;
-
-
-
 Game::Game():mWindow(nullptr),
             mRenderer(nullptr),
             mTicksCount(0),
@@ -49,7 +44,7 @@ bool Game::initialize()
             printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
         }
     }
-    tank_obj = new Tank(mRenderer, Vector2{5, 100}, "/home/andrew/Works_C++/Games/Tanks/Sprites/tank.png");
+    tank_obj = new Tank(this, Vector2{5, 100}, "../Sprites/tank.png");
     return true;
 }
 

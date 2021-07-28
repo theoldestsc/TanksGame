@@ -1,6 +1,7 @@
 #include "Tank.h"
+#include "Game.h"
 
-Tank::Tank(SDL_Renderer *renderer, Vector2 start_pos, const char* image_path):mTankDir(NONE)
+Tank::Tank(Game *game, Vector2 start_pos, const char* image_path):mTankDir(NONE)
 {
     SDL_Surface* image = IMG_Load(image_path);
     SDL_Rect mSourceRect;
@@ -10,7 +11,7 @@ Tank::Tank(SDL_Renderer *renderer, Vector2 start_pos, const char* image_path):mT
     else
     {
         //Create texture from surface pixels
-        texture = SDL_CreateTextureFromSurface(renderer, image);
+        texture = SDL_CreateTextureFromSurface(game->mRenderer, image);
         if(texture == NULL)
             SDL_Log("Unable to create texture from %s!\
                     SDL Error: %s\n", image_path, SDL_GetError());

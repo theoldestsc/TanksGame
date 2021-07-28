@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(Game)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(SDL2 REQUIRED)
 find_package(SDL_image REQUIRED)
 if(NOT SDL_IMAGE_FOUND)
