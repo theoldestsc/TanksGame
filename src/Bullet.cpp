@@ -3,7 +3,7 @@
 #include "Game.h"
 
 Bullet::Bullet(Game* game, Vector2 start_pos, const char* image_path, Direction mBulletDir)
-                :mBulletDir(NONE)
+                :mBulletDir(mBulletDir)
 {
     SDL_Rect mSourceRect;
     texture = IMG_LoadTexture(game->GetRenderer(),image_path);

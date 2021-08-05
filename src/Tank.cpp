@@ -2,8 +2,9 @@
 #include "Game.h"
 
 Tank::Tank(Game *game, Vector2 start_pos, const char* image_path):
-                                        mTankDir(NONE),
-                                        mTankAngle(0)
+                                        mTankDir(UP),
+                                        mTankAngle(0),
+                                        state(STOP)
 {
     
     SDL_Rect mSourceRect;
@@ -28,58 +29,60 @@ Tank::~Tank()
 void Tank::change_direction(Direction dir)
 {
     this->mTankDir = dir;
-    if (this->mTankDir != Direction::NONE)
-        this->mTankAngle = 90*dir;
+    this->mTankAngle = 90*dir;
 }
 
 void Tank::update(float deltaTime)
 {
-    if(this->mTankDir == UP)
+    if(this->state == MOVE)
     {
-        this->tank_rect.y += static_cast<int>(-300.0f * deltaTime);
-        if(this->tank_rect.y < 0)
+        if(this->mTankDir == UP)
         {
-            this->tank_rect.y = 0;
+            this->tank_rect.y += static_cast<int>(-300.0f * deltaTime);
+            if(this->tank_rect.y < 0)
+            {
+                this->tank_rect.y = 0;
+            }
+            else if (this->tank_rect.y > (HEIGHT - this->tank_rect.h))
+            {
+                this->tank_rect.y = HEIGHT;
+            }
         }
-        else if (this->tank_rect.y > (HEIGHT - this->tank_rect.h))
+        else if(this->mTankDir == DOWN)
         {
-            this->tank_rect.y = HEIGHT;
-        }
-    }
-    else if(this->mTankDir == DOWN)
-    {
-        
-        this->tank_rect.y += static_cast<int>(300.0f * deltaTime);
-        if(this->tank_rect.y < 0)
-        {
-            this->tank_rect.y = 0;
-        }
-        else if (this->tank_rect.y > (HEIGHT - this->tank_rect.h))
-        {
-            this->tank_rect.y = HEIGHT - this->tank_rect.h;
-        }
-    }
 
-    else if(mTankDir == RIGHT)
-    {
+            this->tank_rect.y += static_cast<int>(300.0f * deltaTime);
+            if(this->tank_rect.y < 0)
+            {
+                this->tank_rect.y = 0;
+            }
+            else if (this->tank_rect.y > (HEIGHT - this->tank_rect.h))
+            {
+                this->tank_rect.y = HEIGHT - this->tank_rect.h;
+            }
+        }
+
+        else if(mTankDir == RIGHT)
+        {
+
+            tank_rect.x += static_cast<int>( 300.0f * deltaTime);
+            if (tank_rect.x > (WIDTH - tank_rect.w))
+            {
+                tank_rect.x = WIDTH - tank_rect.w;
+            }
+        }
+        else if(mTankDir == LEFT)
+        {
         
-        tank_rect.x += static_cast<int>( 300.0f * deltaTime);
-        if (tank_rect.x > (WIDTH - tank_rect.w))
-        {
-            tank_rect.x = WIDTH - tank_rect.w;
-        }
-    }
-    else if(mTankDir == LEFT)
-    {
-      
-        tank_rect.x += static_cast<int>(-300.0f * deltaTime);
-        if(tank_rect.x < 0)
-        {
-            tank_rect.x = 0;
-        }
-        else if (tank_rect.x > (WIDTH - tank_rect.w))
-        {
-            tank_rect.x = WIDTH - tank_rect.w;
+            tank_rect.x += static_cast<int>(-300.0f * deltaTime);
+            if(tank_rect.x < 0)
+            {
+                tank_rect.x = 0;
+            }
+            else if (tank_rect.x > (WIDTH - tank_rect.w))
+            {
+                tank_rect.x = WIDTH - tank_rect.w;
+            }
         }
     }
 }

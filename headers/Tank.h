@@ -21,6 +21,7 @@ class Tank
         SDL_Texture* texture; //TODO: only avalable for reading - const methods
         double mTankAngle;  //TODO: only avalable for reading - const methods
         Direction mTankDir; //TODO: only avalable for reading - const methods
+        State state;
     private:
 
 };

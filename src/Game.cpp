@@ -91,18 +91,25 @@ void Game::ProcessInput()
     
     const Uint8* state = SDL_GetKeyboardState(NULL);
     //if escape is pressed, also end loop
-
-    tank_obj->change_direction(Direction::NONE);
+    tank_obj->state = State::STOP;
     if(state[SDL_SCANCODE_ESCAPE])
         mIsRunning = false;
-    else if(state[SDL_SCANCODE_W])
+    else if(state[SDL_SCANCODE_W]){
+        tank_obj->state = State::MOVE;
         tank_obj->change_direction(Direction::UP);
-    else if(state[SDL_SCANCODE_S])
+    }
+    else if(state[SDL_SCANCODE_S]){
+        tank_obj->state = State::MOVE;
         tank_obj->change_direction(Direction::DOWN);
-    else if(state[SDL_SCANCODE_D])
+    }
+    else if(state[SDL_SCANCODE_D]){
+        tank_obj->state = State::MOVE;
         tank_obj->change_direction(Direction::RIGHT);
-    else if(state[SDL_SCANCODE_A])
+    }
+    else if(state[SDL_SCANCODE_A]){
+        tank_obj->state = State::MOVE;
         tank_obj->change_direction(Direction::LEFT);
+    }
     else if(state[SDL_SCANCODE_SPACE])
     {
         /*TODO: Too slow, make virtual class GameObject 
