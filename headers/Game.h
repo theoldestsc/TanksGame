@@ -6,8 +6,6 @@
 #include <vector>
 #include <SDL2/SDL_image.h>
 #include "DataStructures.h"
-#include <cmath>
-
 
 #include "Tank.h"
 #include "Bullet.h"

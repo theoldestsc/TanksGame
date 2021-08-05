@@ -19,10 +19,19 @@ enum Direction
     LEFT,
 };
 
-struct Vector2 
+template<typename T>
+struct Point 
 { 
-    float x; 
-    float y; 
+    T x; 
+    T y; 
 };
+
+template<typename T>
+struct Size
+{ 
+    T w; 
+    T h; 
+};
+
 
 #endif

@@ -13,7 +13,7 @@ class Game;
 class Tank
 {
     public:
-        Tank(Game* game, Vector2 start_pos, const char* image_path);
+        Tank(Game* game, Point<int> start_pos, const char* image_path);
         ~Tank();
         void update(float deltaTime);
         void change_direction(Direction dir);
@@ -23,7 +23,7 @@ class Tank
         Direction mTankDir; //TODO: only avalable for reading - const methods
         State state;
     private:
-
+        
 };
 
 #endif

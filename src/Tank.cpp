@@ -1,13 +1,15 @@
 #include "Tank.h"
 #include "Game.h"
 
-Tank::Tank(Game *game, Vector2 start_pos, const char* image_path):
+Tank::Tank(Game *game, Point<int> start_pos, const char* image_path):
                                         mTankDir(UP),
                                         mTankAngle(0),
                                         state(STOP)
+                                    
 {
     
     SDL_Rect mSourceRect;
+    
     texture = IMG_LoadTexture(game->GetRenderer(),image_path);
     if(texture == NULL)
         SDL_Log("Unable to create texture from %s!\
