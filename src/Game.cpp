@@ -4,7 +4,9 @@
 Game::Game():mWindow(nullptr),
             mRenderer(nullptr),
             mTicksCount(0),
-            mIsRunning(true)
+            mIsRunning(true),
+            tank_obj(nullptr)
+            
 {
     
 }
@@ -17,9 +19,9 @@ bool Game::initialize()
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return false;
     }
-    mWindow = SDL_CreateWindow("Game Programming in C++ (Chapter 1)", // Title
-                                100, // Top left x - coordinate of window
-                                100, // Top left y - coordinate of window
+    mWindow = SDL_CreateWindow("TanksBattle", // Title
+                                SDL_WINDOWPOS_UNDEFINED, // Top left x - coordinate of window
+                                SDL_WINDOWPOS_UNDEFINED, // Top left y - coordinate of window
                                 WIDTH, // Width
                                 HEIGHT, // Height
                                 0 // Flags
@@ -39,9 +41,10 @@ bool Game::initialize()
     {
         //Initialize PNG loading
         int imgFlags = IMG_INIT_PNG;
-        if( !( IMG_Init( imgFlags ) & imgFlags ) )
+        if(!(IMG_Init(imgFlags)&imgFlags))
         {
-            printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+            SDL_Log("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+            return false; 
         }
     }
     tank_obj = new Tank(this, Vector2{5, 100}, "../Sprites/tank.png");
@@ -51,8 +54,10 @@ bool Game::initialize()
 void Game::ShutDown()
 {
     delete tank_obj;
+
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
+    IMG_Quit();
     SDL_Quit();
 }
 
@@ -83,9 +88,11 @@ void Game::ProcessInput()
         }
     }        
     //Get state of keyboard
-    tank_obj->change_direction(Direction::NONE);
+    
     const Uint8* state = SDL_GetKeyboardState(NULL);
     //if escape is pressed, also end loop
+
+    tank_obj->change_direction(Direction::NONE);
     if(state[SDL_SCANCODE_ESCAPE])
         mIsRunning = false;
     else if(state[SDL_SCANCODE_W])
@@ -97,7 +104,28 @@ void Game::ProcessInput()
     else if(state[SDL_SCANCODE_A])
         tank_obj->change_direction(Direction::LEFT);
     else if(state[SDL_SCANCODE_SPACE])
+    {
+        /*TODO: Too slow, make virtual class GameObject 
+                inherits Tank and Bullet, 
+                load texture for bullet only once
+         */
+
+        Vector2 bullet_coords;
+        /*TODO: have access to bullet rectangle*/
+        bullet_coords.x = (tank_obj->tank_rect.x + 
+                          (float)tank_obj->tank_rect.w/2) +
+                          (float)tank_obj->tank_rect.w/2 *
+                          sin(tank_obj->mTankAngle*M_PI/180);
+                          
+        bullet_coords.y = (tank_obj->tank_rect.y + 
+                           tank_obj->tank_rect.h/2) - 
+                           (float)tank_obj->tank_rect.h/2 * 
+                           cos(tank_obj->mTankAngle*M_PI/180);
+        SDL_Log("%f %f\n", cos(tank_obj->mTankAngle*M_PI/180), tank_obj->mTankAngle);
+        vBullets.push_back(new Bullet(this, bullet_coords, "../Sprites/Bullet_Red.png", tank_obj->mTankDir));
         SDL_Log("Create a Bullet\n");
+       
+    }
 }
 
 void Game::UpdateGame()
@@ -121,5 +149,12 @@ void Game::GenerateOutput()
                     tank_obj->mTankAngle, 
                     NULL, 
                     SDL_FLIP_HORIZONTAL);
+    /*for(Bullet &bullet: vBullets)
+        SDL_Log("Bullet\n");*/
+    for(Bullet* bullet: vBullets)
+        SDL_RenderCopy(mRenderer, bullet->texture, NULL, 
+                    &bullet->bullet_rect);
     SDL_RenderPresent(mRenderer);     
 }
+
+SDL_Renderer* Game::GetRenderer() const { return mRenderer; }

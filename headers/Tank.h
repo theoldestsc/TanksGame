@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_image.h>
 #include "DataStructures.h"
-//#include "Game.h"
+
 class Game;
 
 
@@ -13,18 +13,16 @@ class Game;
 class Tank
 {
     public:
-        Tank(Game *game, Vector2 start_pos, const char* image_path);
+        Tank(Game* game, Vector2 start_pos, const char* image_path);
         ~Tank();
         void update(float deltaTime);
         void change_direction(Direction dir);
         SDL_Rect tank_rect; //TODO: only avalable for reading - const methods
         SDL_Texture* texture; //TODO: only avalable for reading - const methods
         double mTankAngle;  //TODO: only avalable for reading - const methods
+        Direction mTankDir; //TODO: only avalable for reading - const methods
     private:
-        Direction mTankDir;
-        
-        
-        
+
 };
 
 #endif

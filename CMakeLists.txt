@@ -22,7 +22,9 @@ if(NOT SDL2_FOUND)
 	message(FATAL_ERROR "SDL2 NOT FOUND")
 	return()
 else()
-	set(CMAKE_CXX_FLAGS "-g")
+	add_compile_options("-g"
+						"-Wall"
+						"$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>")
 	include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} headers/)
 
     file(GLOB SOURCES "src/*.cpp")
