@@ -2,9 +2,9 @@
 #include "Game.h"
 
 Tank::Tank(Game *game, Point<int> start_pos, const char* image_path):
-                                        mTankDir(UP),
+                                        mTankDir(Direction::UP),
                                         mTankAngle(0),
-                                        state(STOP)
+                                        state(State::STOP)
                                     
 {
     
@@ -31,14 +31,14 @@ Tank::~Tank()
 void Tank::change_direction(Direction dir)
 {
     this->mTankDir = dir;
-    this->mTankAngle = 90*dir;
+    this->mTankAngle = 90*as_integer(dir);
 }
 
 void Tank::update(float deltaTime)
 {
-    if(this->state == MOVE)
+    if(this->state == State::MOVE)
     {
-        if(this->mTankDir == UP)
+        if(this->mTankDir == Direction::UP)
         {
             this->tank_rect.y += static_cast<int>(-300.0f * deltaTime);
             if(this->tank_rect.y < 0)
@@ -50,7 +50,7 @@ void Tank::update(float deltaTime)
                 this->tank_rect.y = HEIGHT;
             }
         }
-        else if(this->mTankDir == DOWN)
+        else if(this->mTankDir == Direction::DOWN)
         {
 
             this->tank_rect.y += static_cast<int>(300.0f * deltaTime);
@@ -64,7 +64,7 @@ void Tank::update(float deltaTime)
             }
         }
 
-        else if(mTankDir == RIGHT)
+        else if(mTankDir == Direction::RIGHT)
         {
 
             tank_rect.x += static_cast<int>( 300.0f * deltaTime);
@@ -73,7 +73,7 @@ void Tank::update(float deltaTime)
                 tank_rect.x = WIDTH - tank_rect.w;
             }
         }
-        else if(mTankDir == LEFT)
+        else if(mTankDir == Direction::LEFT)
         {
         
             tank_rect.x += static_cast<int>(-300.0f * deltaTime);

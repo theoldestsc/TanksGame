@@ -5,13 +5,16 @@
 #define WIDTH 512
 #define HEIGHT 384
 
-enum State
+#include <type_traits>
+
+enum class State
 {
     MOVE,
     STOP,
+    COLLISION,
 };
 
-enum Direction 
+enum class Direction 
 {
     UP,
     RIGHT,
@@ -33,5 +36,10 @@ struct Size
     T h; 
 };
 
+template <typename Enumeration>
+constexpr auto as_integer(Enumeration const value) -> typename std::underlying_type<Enumeration>::type
+{
+    return static_cast<typename std::underlying_type<Enumeration>::type>(value);
+}
 
 #endif

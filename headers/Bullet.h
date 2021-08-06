@@ -14,10 +14,13 @@ class Bullet
         void update(float deltaTime);
         SDL_Rect bullet_rect; //TODO: only avalable for reading - const methods
         SDL_Texture* texture;
+        void reinitialize(Point<int> mBallPos, Direction dir);
+        State state;
     private:
         Point<int> mBallVel;
         Point<int> mBallPos;
         Direction mBulletDir;
+        
 
 };
 #endif

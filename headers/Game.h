@@ -3,7 +3,7 @@
 #define GAME_H
 #define _USE_MATH_DEFINES
 #include <SDL.h>
-#include <vector>
+#include <set>
 #include <SDL2/SDL_image.h>
 #include "DataStructures.h"
 
@@ -29,7 +29,7 @@ class Game
         bool mIsRunning;
         Uint32 mTicksCount;
         Tank* tank_obj;
-        std::vector<Bullet*> vBullets;
+        std::set<Bullet*> vBullets;
         
 };
 

@@ -83,34 +83,13 @@ void Game::ProcessInput()
             mIsRunning = false;
             break;
         case SDL_KEYUP:
-            if(event.key.keysym.sym == SDLK_SPACE)
-                {
-                    /*TODO: Too slow, make virtual class GameObject 
-                            inherits Tank and Bullet, 
-                            load texture for bullet only once
-                     */
-                    Point<int> bullet_coords;
-                    /*TODO: have access to bullet rectangle*/
-                    bullet_coords.x = (tank_obj->tank_rect.x + 
-                                      tank_obj->tank_rect.w/2) +
-                                      tank_obj->tank_rect.w/2 *
-                                      SDL_sin(tank_obj->mTankAngle*M_PI/180);
-
-                    bullet_coords.y = (tank_obj->tank_rect.y + 
-                                       tank_obj->tank_rect.h/2) - 
-                                       (float)tank_obj->tank_rect.h/2 * 
-                                       SDL_cos(tank_obj->mTankAngle*M_PI/180);
-                    vBullets.push_back(new Bullet(this, bullet_coords, "../Sprites/Bullet_Red.png", tank_obj->mTankDir));
-                }
+            
             break;
         default:
             break;
         }
     }        
-    //Get state of keyboard
-    
     const Uint8* state = SDL_GetKeyboardState(NULL);
-    //if escape is pressed, also end loop
     tank_obj->state = State::STOP;
     if(state[SDL_SCANCODE_ESCAPE])
         mIsRunning = false;
@@ -130,7 +109,30 @@ void Game::ProcessInput()
         tank_obj->state = State::MOVE;
         tank_obj->change_direction(Direction::LEFT);
     }
-    
+    if(state[SDL_SCANCODE_SPACE])
+    {
+        /*TODO: Too slow, make virtual class GameObject 
+                inherits Tank and Bullet, 
+                load texture for bullet only once
+         */
+        Point<int> bullet_coords;
+        /*TODO: have access to bullet rectangle*/
+        bullet_coords.x = (tank_obj->tank_rect.x + 
+                          tank_obj->tank_rect.w/2) +
+                          tank_obj->tank_rect.w/2 *
+                          SDL_sin(tank_obj->mTankAngle*M_PI/180);
+        bullet_coords.y = (tank_obj->tank_rect.y + 
+                           tank_obj->tank_rect.h/2) - 
+                           (float)tank_obj->tank_rect.h/2 * 
+                           SDL_cos(tank_obj->mTankAngle*M_PI/180);
+        for(Bullet* bullet: vBullets){
+            if(bullet->state == State::COLLISION){
+                bullet->reinitialize(bullet_coords, tank_obj->mTankDir);
+                return;
+            }
+        }
+        vBullets.emplace(new Bullet(this, bullet_coords, "../Sprites/Bullet_Red.png", tank_obj->mTankDir));
+    }
 }
 
 void Game::UpdateGame()
@@ -156,9 +158,11 @@ void Game::GenerateOutput()
                     tank_obj->mTankAngle, 
                     NULL, 
                     SDL_FLIP_HORIZONTAL);
-    for(Bullet* bullet: vBullets)
-        SDL_RenderCopy(mRenderer, bullet->texture, NULL, 
+    for(Bullet* bullet: vBullets){
+        if(bullet->state != State::COLLISION)
+            SDL_RenderCopy(mRenderer, bullet->texture, NULL, 
                     &bullet->bullet_rect);
+    }
     SDL_RenderPresent(mRenderer);     
 }
 
