@@ -6,18 +6,19 @@ TextureManager* TextureManager::textureManagerInstance = nullptr;
 bool TextureManager::Load(std::string fileName, std::string
                           id, SDL_Renderer* renderer)
 {
-    SDL_Surface* pTempSurface = IMG_Load(fileName.c_str());
-    if(pTempSurface == 0)
+    
+    SDL_Texture* texture = IMG_LoadTexture(renderer, fileName.c_str());
+    if(texture)
     {
-        return false;
-    }
-    SDL_Texture* pTexture = SDL_CreateTextureFromSurface(renderer, pTempSurface);
-    SDL_FreeSurface(pTempSurface);
-
-    if(pTexture != 0)
-    {
-        textureMap[id] = pTexture;
+        textureMap[id] = texture;
         return true;
+    }
+    else
+    {
+        SDL_Log("Unable to create texture from %s! SDL Error: %s\n", 
+                fileName.c_str(), 
+                SDL_GetError());
+        return false;
     }
     return false;
 }
@@ -67,6 +68,7 @@ TextureManager* TextureManager::Instance()
     }
     return textureManagerInstance;
 }
+
 TextureManager::~TextureManager()
 {
     delete textureManagerInstance;
