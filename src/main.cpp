@@ -2,14 +2,16 @@
 #include <iostream>
 #include "Game.h"
 
+
 int main(int argc, char *argv[])
 {
-    Game game;
-    bool success = game.initialize();
+    Game* gameInstance = Game::Instance();
+    bool success = gameInstance->initialize();
     if(success)
     {
-        game.RunLoop();
+        gameInstance->RunLoop();
     }
-    game.ShutDown();
+    gameInstance->ShutDown();
+    delete gameInstance;
     return 0;
 }

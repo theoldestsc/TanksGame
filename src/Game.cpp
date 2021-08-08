@@ -1,5 +1,6 @@
 #include "Game.h"
 
+Game* Game::gameInstance = nullptr;
 
 Game::Game():mWindow(nullptr),
             mRenderer(nullptr),
@@ -9,6 +10,17 @@ Game::Game():mWindow(nullptr),
             
 {
     
+}
+
+Game* Game::Instance()
+{
+    if(!gameInstance)
+    {
+        gameInstance = new Game();
+        return gameInstance;
+    }
+    else
+        return gameInstance;
 }
 
 bool Game::initialize()

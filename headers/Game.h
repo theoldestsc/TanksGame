@@ -15,21 +15,29 @@
 class Game
 {
     public:
-        Game();
+        
         bool initialize();
         void RunLoop();
         void ShutDown();
         SDL_Renderer* GetRenderer() const;
+        static Game* Instance();
+        Game(Game &other) = delete;
+        void operator=(const Game&) = delete;
     private:
         void ProcessInput();
         void UpdateGame();
         void GenerateOutput();
+        
+        static Game* gameInstance;
         SDL_Window* mWindow;
         SDL_Renderer* mRenderer;
         bool mIsRunning;
         Uint32 mTicksCount;
         Tank* tankObj;
-        std::set<Bullet*> vBullets;
+        
+
+    protected:
+        Game();
         
 };
 
