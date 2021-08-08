@@ -7,16 +7,13 @@ Tank::Tank(const LoaderParams* pParams):SDLGameObject(pParams),
                                         state(State::STOP)
                                     
 {
-    x = pParams->getX();
-    y = pParams->getY();
-    width = pParams->getWidth();
-    height = pParams->getHeight();
-    textureID = pParams->getTextureID();
+ 
 }
 
 Tank::~Tank()
 {
-    
+    for(Bullet* bullet : vBullets)
+        delete bullet;
 }
 
 void Tank::change_direction(Direction dir)
