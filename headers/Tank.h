@@ -14,9 +14,9 @@ class Game;
 class Tank
 {
     public:
-        Tank(SDL_Renderer* renderer, Point<int> &&start_pos);
+        Tank(SDL_Renderer* renderer, Point<int> &&startPos);
         ~Tank();
-        void update(float deltaTime);
+        void Update(float deltaTime);
         void change_direction(Direction dir);
         void setState(State state);
         void Fire();
@@ -24,7 +24,7 @@ class Tank
         void Render();
     private:
         SDL_Renderer* renderer;
-        Point<int> start_pos;
+        Point<int> startPos;
         std::set<Bullet*> vBullets;
         SDL_Rect tank_rect;
         SDL_Texture* texture;

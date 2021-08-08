@@ -2,27 +2,25 @@
 #include "Bullet.h"
 #include "Game.h"
 
-Bullet::Bullet(SDL_Renderer* renderer, Point<int> start_pos):state(State::MOVE)
+Bullet::Bullet(SDL_Renderer* renderer, Point<int> startPos):
+                                        state(State::MOVE)
 {
-    this->start_pos = start_pos;
+    this->startPos = startPos;
     this->renderer = renderer;
 }
 
 void Bullet::Load(const char* image_path)
 {
-    SDL_Rect mSourceRect;
     this->texture = IMG_LoadTexture(this->renderer, image_path);
     if(texture == NULL)
         SDL_Log("Unable to create texture from %s!\
                     SDL Error: %s\n", image_path, SDL_GetError());
-    SDL_QueryTexture(texture, NULL, NULL, &mSourceRect.w, &mSourceRect.h);
-    mSourceRect.x = 0;
-    mSourceRect.y = 0;
-    this->bullet_rect.x = static_cast<int>(start_pos.x) - mSourceRect.w/2; // TODO: FIX THIS with another initialization
-    this->bullet_rect.y = static_cast<int>(start_pos.y) - mSourceRect.h/2;
-    this->bullet_rect.w = mSourceRect.w;
-    this->bullet_rect.h = mSourceRect.h;
+    SDL_QueryTexture(texture, NULL, NULL, &bulletRect.w, &bulletRect.h);
+
+    this->bulletRect.x = static_cast<int>(startPos.x); // TODO: FIX THIS with another initialization
+    this->bulletRect.y = static_cast<int>(startPos.y);
 }
+
 
 void Bullet::setDirection(Direction dir)
 {
@@ -32,53 +30,53 @@ void Bullet::setDirection(Direction dir)
 void Bullet::Render()
 {
     SDL_RenderCopy(this->renderer, this->texture, NULL, 
-                    &this->bullet_rect);
+                    &this->bulletRect);
 }
 
-void Bullet::update(float deltaTime)
+void Bullet::Update(float deltaTime)
 {
     if(state == State::MOVE)
     {
         if(this->mBulletDir == Direction::UP)
         {
-            this->bullet_rect.y += static_cast<int>(-300.0f * deltaTime);
-            if(this->bullet_rect.y < 0)
+            this->bulletRect.y += static_cast<int>(-300.0f * deltaTime);
+            if(this->bulletRect.y < 0)
             {
                 state = State::COLLISION;
             }
-            else if (this->bullet_rect.y > (HEIGHT - this->bullet_rect.h))
+            else if (this->bulletRect.y > (HEIGHT - this->bulletRect.h))
             {
                 state = State::COLLISION;
             }
         }
         else if(this->mBulletDir == Direction::DOWN)
         {
-            this->bullet_rect.y += static_cast<int>(300.0f * deltaTime);
-            if(this->bullet_rect.y < 0)
+            this->bulletRect.y += static_cast<int>(300.0f * deltaTime);
+            if(this->bulletRect.y < 0)
             {
                 state = State::COLLISION;
             }
-            else if (this->bullet_rect.y > (HEIGHT - this->bullet_rect.h))
+            else if (this->bulletRect.y > (HEIGHT - this->bulletRect.h))
             {
                 state = State::COLLISION;
             }
         }
         else if(this->mBulletDir == Direction::RIGHT)
         {
-            bullet_rect.x += static_cast<int>( 300.0f * deltaTime);
-            if (bullet_rect.x > (WIDTH - bullet_rect.w))
+            bulletRect.x += static_cast<int>( 300.0f * deltaTime);
+            if (bulletRect.x > (WIDTH - bulletRect.w))
             {
                 state = State::COLLISION;
             }
         }
         else if(this->mBulletDir == Direction::LEFT)
         {
-            bullet_rect.x += static_cast<int>(-300.0f * deltaTime);
-            if(bullet_rect.x < 0)
+            bulletRect.x += static_cast<int>(-300.0f * deltaTime);
+            if(bulletRect.x < 0)
             {
                 state = State::COLLISION;
             }
-            else if (bullet_rect.x > (WIDTH - bullet_rect.w))
+            else if (bulletRect.x > (WIDTH - bulletRect.w))
             {
                 state = State::COLLISION;
             }
@@ -86,10 +84,10 @@ void Bullet::update(float deltaTime)
     }
 }
 
-void Bullet::reinitialize(Point<int> mBallPos, Direction dir)
+void Bullet::Reinitialize(Point<int> mBallPos, Direction dir)
 {
-    bullet_rect.x = mBallPos.x;
-    bullet_rect.y = mBallPos.y;
+    bulletRect.x = mBallPos.x;
+    bulletRect.y = mBallPos.y;
     state = State::MOVE;
     setDirection(dir);
 }

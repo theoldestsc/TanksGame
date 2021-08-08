@@ -9,11 +9,10 @@ class Game;
 class Bullet
 {
     public:
-        Bullet(SDL_Renderer* renderer, Point<int> start_pos);
+        Bullet(SDL_Renderer* renderer, Point<int> startPos);
         ~Bullet();
-        void update(float deltaTime);
-        
-        void reinitialize(Point<int> mBallPos, Direction dir);
+        void Update(float deltaTime);     
+        void Reinitialize(Point<int> mBallPos, Direction dir);
         void Load(const char* image_path);
         void Render();
         void setDirection(Direction dir);
@@ -23,9 +22,9 @@ class Bullet
         Point<int> mBallPos;
         Direction mBulletDir;
         SDL_Renderer* renderer;
-        Point<int> start_pos;
+        Point<int> startPos;
         State state;
-        SDL_Rect bullet_rect;
+        SDL_Rect bulletRect;
         SDL_Texture* texture;
         
 

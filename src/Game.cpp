@@ -5,7 +5,7 @@ Game::Game():mWindow(nullptr),
             mRenderer(nullptr),
             mTicksCount(0),
             mIsRunning(true),
-            tank_obj(nullptr)
+            tankObj(nullptr)
             
 {
     
@@ -47,14 +47,14 @@ bool Game::initialize()
             return false; 
         }
     }
-    tank_obj = new Tank(mRenderer, Point<int>{5, 100});
-    tank_obj->Load("../Sprites/tank.png");
+    tankObj = new Tank(mRenderer, Point<int>{5, 100});
+    tankObj->Load("../Sprites/tank.png");
     return true;
 }
 
 void Game::ShutDown()
 {
-    delete tank_obj;
+    delete tankObj;
 
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
@@ -91,24 +91,24 @@ void Game::ProcessInput()
         }
     }        
     const Uint8* state = SDL_GetKeyboardState(NULL);
-    tank_obj->setState(State::STOP);
+    tankObj->setState(State::STOP);
     if(state[SDL_SCANCODE_ESCAPE])
         mIsRunning = false;
     else if(state[SDL_SCANCODE_W]){
-        tank_obj->setState(State::MOVE);
-        tank_obj->change_direction(Direction::UP);
+        tankObj->setState(State::MOVE);
+        tankObj->change_direction(Direction::UP);
     }
     else if(state[SDL_SCANCODE_S]){
-        tank_obj->setState(State::MOVE);
-        tank_obj->change_direction(Direction::DOWN);
+        tankObj->setState(State::MOVE);
+        tankObj->change_direction(Direction::DOWN);
     }
     else if(state[SDL_SCANCODE_D]){
-        tank_obj->setState(State::MOVE);
-        tank_obj->change_direction(Direction::RIGHT);
+        tankObj->setState(State::MOVE);
+        tankObj->change_direction(Direction::RIGHT);
     }
     else if(state[SDL_SCANCODE_A]){
-        tank_obj->setState(State::MOVE);
-        tank_obj->change_direction(Direction::LEFT);
+        tankObj->setState(State::MOVE);
+        tankObj->change_direction(Direction::LEFT);
     }
     if(state[SDL_SCANCODE_SPACE])
     {
@@ -116,7 +116,7 @@ void Game::ProcessInput()
                 inherits Tank and Bullet, 
                 load texture for bullet only once
          */
-        tank_obj->Fire();
+        tankObj->Fire();
     }
 }
 
@@ -127,7 +127,7 @@ void Game::UpdateGame()
     if(deltaTime > 0.05f)
         deltaTime = 0.05f;
     mTicksCount = SDL_GetTicks();
-    tank_obj->update(deltaTime);
+    tankObj->Update(deltaTime);
     
 }
 
@@ -137,7 +137,7 @@ void Game::GenerateOutput()
     SDL_RenderClear(mRenderer);
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
     
-    tank_obj->Render();
+    tankObj->Render();
    
     SDL_RenderPresent(mRenderer);     
 }

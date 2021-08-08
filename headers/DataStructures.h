@@ -7,14 +7,14 @@
 
 #include <type_traits>
 
-enum class State
+enum State
 {
     MOVE,
     STOP,
     COLLISION,
 };
 
-enum class Direction 
+enum Direction 
 {
     UP,
     RIGHT,
@@ -35,11 +35,5 @@ struct Size
     T w; 
     T h; 
 };
-
-template <typename Enumeration>
-constexpr auto as_integer(Enumeration const value) -> typename std::underlying_type<Enumeration>::type
-{
-    return static_cast<typename std::underlying_type<Enumeration>::type>(value);
-}
 
 #endif

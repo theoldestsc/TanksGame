@@ -28,7 +28,7 @@ class Game
         SDL_Renderer* mRenderer;
         bool mIsRunning;
         Uint32 mTicksCount;
-        Tank* tank_obj;
+        Tank* tankObj;
         std::set<Bullet*> vBullets;
         
 };
