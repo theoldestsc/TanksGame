@@ -14,8 +14,7 @@
 
 class Game
 {
-    public:
-        
+    public:       
         bool Initialize();
         void RunLoop();
         void ShutDown();
@@ -23,18 +22,19 @@ class Game
         static Game* Instance();
         Game(Game &other) = delete;
         void operator=(const Game&) = delete;
+        ~Game();
+        
     private:
         void ProcessInput();
         void UpdateGame();
         void GenerateOutput();
-        
+
         static Game* gameInstance;
         SDL_Window* mWindow;
         SDL_Renderer* mRenderer;
         bool mIsRunning;
         Uint32 mTicksCount;
         Tank* tankObj;
-        
 
     protected:
         Game();

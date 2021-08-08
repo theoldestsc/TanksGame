@@ -20,13 +20,15 @@ class TextureManager
                        int currentRow, int currentFrame,
                        SDL_Renderer* rendrer,
                        SDL_RendererFlip flip = SDL_FLIP_NONE);
-        ~TextureManager();
         static TextureManager* Instance();
         TextureManager(TextureManager &other) = delete;
         void operator=(const TextureManager&) = delete;
+        ~TextureManager();
+
     private:
         std::map<std::string, SDL_Texture*> textureMap;
         static TextureManager* textureManagerInstance;
+
     protected:
         TextureManager(){};
 };

@@ -12,6 +12,7 @@ class SDLGameObject : public GameObject
         virtual void Draw();
         virtual void Update(float deltaTime){};
         virtual void Clean(){};
+        
     protected:
         int x;
         int y;

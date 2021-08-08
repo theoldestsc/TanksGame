@@ -12,6 +12,5 @@ int main(int argc, char *argv[])
         gameInstance->RunLoop();
     }
     gameInstance->ShutDown();
-    delete gameInstance;
     return 0;
 }

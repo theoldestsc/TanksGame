@@ -7,9 +7,6 @@
 #include <set>
 class Game;
 
-
-
-//TODO: Make global object - Game Object, Tank inherits some properties (Think about it)
 class Tank : public SDLGameObject
 {
     public:
@@ -20,6 +17,7 @@ class Tank : public SDLGameObject
         void setState(State state);
         void Fire();
         virtual void Draw() override;
+
     private:
         std::set<Bullet*> vBullets;
         double mTankAngle;

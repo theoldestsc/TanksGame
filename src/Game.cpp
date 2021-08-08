@@ -26,6 +26,8 @@ Game* Game::Instance()
 bool Game::Initialize()
 {
     int sdlResult = SDL_Init(SDL_INIT_VIDEO);
+    bool ret;
+
     if(sdlResult != 0)
     {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
@@ -60,11 +62,21 @@ bool Game::Initialize()
         }
     }
     TextureManager* textureManager = TextureManager::Instance();
-    textureManager->Load(std::string("../Sprites/tankScaled.png"), std::string("Tank"), mRenderer);
-    textureManager->Load(std::string("../Sprites/Bullet_Red.png"), std::string("Bullet"), mRenderer);
+
+    ret = textureManager->Load(std::string("../Sprites/tankScaled.png"),
+                               std::string("Tank"),
+                               mRenderer);
+    if(!ret)
+        return false;
+    ret = textureManager->Load(std::string("../Sprites/Bullet_Red.png"), 
+                               std::string("Bullet"), 
+                               mRenderer);
+    if(!ret)
+        return false;
     LoaderParams pParams(5, 100,
                         52, 64, 
                         std::string("Tank"));
+
     tankObj = new Tank(&pParams);
     return true;
 }
@@ -92,7 +104,7 @@ void Game::RunLoop()
 void Game::ProcessInput()
 {
     SDL_Event event;
-    //До тех пор пока есть события в очереди
+
     while (SDL_PollEvent(&event))
     {
         switch (event.type)
@@ -108,6 +120,7 @@ void Game::ProcessInput()
         }
     }        
     const Uint8* state = SDL_GetKeyboardState(NULL);
+
     tankObj->setState(State::STOP);
     if(state[SDL_SCANCODE_ESCAPE])
         mIsRunning = false;
@@ -129,10 +142,6 @@ void Game::ProcessInput()
     }
     if(state[SDL_SCANCODE_SPACE])
     {
-        /*TODO: Too slow, make virtual class GameObject 
-                inherits Tank and Bullet, 
-                load texture for bullet only once
-         */
         tankObj->Fire();
     }
 }
@@ -164,3 +173,7 @@ SDL_Renderer* Game::GetRenderer() const
     return mRenderer; 
 }
 
+Game::~Game()
+{
+    delete gameInstance;
+}

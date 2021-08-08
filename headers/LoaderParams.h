@@ -14,6 +14,7 @@ public:
     int getWidth() const;
     int getHeight() const;
     std::string getTextureID() const;
+    
 private:
     int x;
     int y;

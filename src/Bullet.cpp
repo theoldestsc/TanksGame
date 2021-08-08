@@ -5,24 +5,8 @@
 Bullet::Bullet(const LoaderParams* pParams):SDLGameObject(pParams),
                                             state(State::MOVE)
 {
-    x = pParams->getX();
-    y = pParams->getY();
-    width = pParams->getWidth();
-    height = pParams->getHeight();
-    textureID = pParams->getTextureID();
+   
 }
-
-/*void Bullet::Load(const char* image_path)
-{
-    this->texture = IMG_LoadTexture(this->renderer, image_path);
-    if(texture == NULL)
-        SDL_Log("Unable to create texture from %s!\
-                    SDL Error: %s\n", image_path, SDL_GetError());
-    SDL_QueryTexture(texture, NULL, NULL, &bulletRect.w, &bulletRect.h);
-
-    this->bulletRect.x = static_cast<int>(startPos.x); // TODO: FIX THIS with another initialization
-    this->bulletRect.y = static_cast<int>(startPos.y);
-}*/
 
 
 void Bullet::setDirection(Direction dir)

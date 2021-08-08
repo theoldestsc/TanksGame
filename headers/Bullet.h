@@ -15,6 +15,7 @@ class Bullet : public SDLGameObject
         void Reinitialize(Point<int> mBallPos, Direction dir);
         void setDirection(Direction dir);
         State getState() const { return state; };
+
     private:
         Direction mBulletDir;
         State state;
