@@ -2,12 +2,16 @@
 #include "Bullet.h"
 #include "Game.h"
 
-Bullet::Bullet(Game* game, Point<int> start_pos, const char* image_path, Direction mBulletDir)
-                :mBulletDir(mBulletDir)
+Bullet::Bullet(SDL_Renderer* renderer, Point<int> start_pos):state(State::MOVE)
+{
+    this->start_pos = start_pos;
+    this->renderer = renderer;
+}
+
+void Bullet::Load(const char* image_path)
 {
     SDL_Rect mSourceRect;
-    state = State::MOVE;
-    texture = IMG_LoadTexture(game->GetRenderer(),image_path);
+    this->texture = IMG_LoadTexture(this->renderer, image_path);
     if(texture == NULL)
         SDL_Log("Unable to create texture from %s!\
                     SDL Error: %s\n", image_path, SDL_GetError());
@@ -18,6 +22,17 @@ Bullet::Bullet(Game* game, Point<int> start_pos, const char* image_path, Directi
     this->bullet_rect.y = static_cast<int>(start_pos.y) - mSourceRect.h/2;
     this->bullet_rect.w = mSourceRect.w;
     this->bullet_rect.h = mSourceRect.h;
+}
+
+void Bullet::setDirection(Direction dir)
+{
+    this->mBulletDir = dir;
+}
+
+void Bullet::Render()
+{
+    SDL_RenderCopy(this->renderer, this->texture, NULL, 
+                    &this->bullet_rect);
 }
 
 void Bullet::update(float deltaTime)
@@ -76,7 +91,7 @@ void Bullet::reinitialize(Point<int> mBallPos, Direction dir)
     bullet_rect.x = mBallPos.x;
     bullet_rect.y = mBallPos.y;
     state = State::MOVE;
-    mBulletDir = dir;
+    setDirection(dir);
 }
 
 Bullet::~Bullet()

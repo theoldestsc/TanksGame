@@ -4,7 +4,8 @@
 
 #include <SDL2/SDL_image.h>
 #include "DataStructures.h"
-
+#include <Bullet.h>
+#include <set>
 class Game;
 
 
@@ -13,17 +14,24 @@ class Game;
 class Tank
 {
     public:
-        Tank(Game* game, Point<int> start_pos, const char* image_path);
+        Tank(SDL_Renderer* renderer, Point<int> &&start_pos);
         ~Tank();
         void update(float deltaTime);
         void change_direction(Direction dir);
-        SDL_Rect tank_rect; //TODO: only avalable for reading - const methods
-        SDL_Texture* texture; //TODO: only avalable for reading - const methods
-        double mTankAngle;  //TODO: only avalable for reading - const methods
-        Direction mTankDir; //TODO: only avalable for reading - const methods
-        State state;
+        void setState(State state);
+        void Fire();
+        void Load(const char* image_path);
+        void Render();
     private:
-        
+        SDL_Renderer* renderer;
+        Point<int> start_pos;
+        std::set<Bullet*> vBullets;
+        SDL_Rect tank_rect;
+        SDL_Texture* texture;
+        double mTankAngle;
+        Direction mTankDir;
+        State state;
+         
 };
 
 #endif

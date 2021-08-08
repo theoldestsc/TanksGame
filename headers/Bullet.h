@@ -9,17 +9,24 @@ class Game;
 class Bullet
 {
     public:
-        Bullet(Game* game, Point<int> start_pos, const char* image_path, Direction mBulletDir);
+        Bullet(SDL_Renderer* renderer, Point<int> start_pos);
         ~Bullet();
         void update(float deltaTime);
-        SDL_Rect bullet_rect; //TODO: only avalable for reading - const methods
-        SDL_Texture* texture;
+        
         void reinitialize(Point<int> mBallPos, Direction dir);
-        State state;
+        void Load(const char* image_path);
+        void Render();
+        void setDirection(Direction dir);
+        State getState() const { return state; };
     private:
         Point<int> mBallVel;
         Point<int> mBallPos;
         Direction mBulletDir;
+        SDL_Renderer* renderer;
+        Point<int> start_pos;
+        State state;
+        SDL_Rect bullet_rect;
+        SDL_Texture* texture;
         
 
 };
