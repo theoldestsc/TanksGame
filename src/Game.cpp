@@ -74,8 +74,8 @@ bool Game::Initialize()
     if(!ret)
         return false;
     LoaderParams pParams(5, 100,
-                        52, 64, 
-                        std::string("Tank"));
+                         52, 64, //TODO: Not a good approach 
+                         std::string("Tank"));
 
     tankObj = new Tank(&pParams);
     return true;

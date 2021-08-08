@@ -72,10 +72,10 @@ void Bullet::Draw()
                                      Game::Instance()->GetRenderer());
 }
 
-void Bullet::Reinitialize(Point<int> mBallPos, Direction dir)
+void Bullet::Reinitialize(int x, int y, Direction dir)
 {
-    this->x = mBallPos.x;
-    this->y = mBallPos.y;
+    this->x = x;
+    this->y = y;
     state = State::MOVE;
     setDirection(dir);
 }

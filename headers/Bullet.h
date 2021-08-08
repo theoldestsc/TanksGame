@@ -12,7 +12,7 @@ class Bullet : public SDLGameObject
         ~Bullet();
         virtual void Update(float deltaTime) override;
         virtual void Draw() override;
-        void Reinitialize(Point<int> mBallPos, Direction dir);
+        void Reinitialize(int x, int y, Direction dir);
         void setDirection(Direction dir);
         State getState() const { return state; };
 

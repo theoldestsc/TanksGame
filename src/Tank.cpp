@@ -80,25 +80,23 @@ void Tank::Update(float deltaTime)
 }
 
 void Tank::Fire()
-{
-    Point<int> bullet_coords;
-        /*TODO: have access to bullet rectangle*/
-    bullet_coords.x = (this->x + 
-                      this->width/2) +
-                      this->width/2 *
-                      SDL_sin(this->mTankAngle*M_PI/180);
-    bullet_coords.y = (this->y + 
-                       this->height/2) - 
-                       this->height/2 * 
-                       SDL_cos(this->mTankAngle*M_PI/180);
+{  
+    int x = (this->x-3 + //TODO: Not a good approach
+             this->width/2) +
+             this->width/2 *
+             SDL_sin(this->mTankAngle*M_PI/180);
+    int y = (this->y-3 + //TODO: Not a good approach
+             this->height/2) - 
+             this->height/2 * 
+             SDL_cos(this->mTankAngle*M_PI/180);
     for(Bullet* bullet: vBullets){
         if(bullet->getState() == State::COLLISION){
-            bullet->Reinitialize(bullet_coords, this->mTankDir);
+            bullet->Reinitialize(x, y, this->mTankDir);
             return;
         }
     }
-    LoaderParams pParams(bullet_coords.x, bullet_coords.y,
-                         7, 7, 
+    LoaderParams pParams(x, y,
+                         7, 7, //TODO: Not a good approach
                          std::string("Bullet"));
     Bullet* bullet = new Bullet(&pParams);
     bullet->setDirection(this->mTankDir);
