@@ -4,7 +4,6 @@
 #define _USE_MATH_DEFINES
 #include <SDL.h>
 #include <set>
-#include <SDL2/SDL_image.h>
 #include "DataStructures.h"
 
 #include "Tank.h"
@@ -12,11 +11,12 @@
 
 
 
+
 class Game
 {
     public:
         
-        bool initialize();
+        bool Initialize();
         void RunLoop();
         void ShutDown();
         SDL_Renderer* GetRenderer() const;

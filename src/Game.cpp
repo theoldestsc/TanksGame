@@ -23,7 +23,7 @@ Game* Game::Instance()
         return gameInstance;
 }
 
-bool Game::initialize()
+bool Game::Initialize()
 {
     int sdlResult = SDL_Init(SDL_INIT_VIDEO);
     if(sdlResult != 0)
@@ -59,8 +59,13 @@ bool Game::initialize()
             return false; 
         }
     }
-    tankObj = new Tank(mRenderer, Point<int>{5, 100});
-    tankObj->Load("../Sprites/tank.png");
+    TextureManager* textureManager = TextureManager::Instance();
+    textureManager->Load(std::string("../Sprites/tankScaled.png"), std::string("Tank"), mRenderer);
+    textureManager->Load(std::string("../Sprites/Bullet_Red.png"), std::string("Bullet"), mRenderer);
+    LoaderParams pParams(5, 100,
+                        52, 64, 
+                        std::string("Tank"));
+    tankObj = new Tank(&pParams);
     return true;
 }
 
@@ -149,7 +154,7 @@ void Game::GenerateOutput()
     SDL_RenderClear(mRenderer);
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
     
-    tankObj->Render();
+    tankObj->Draw();
    
     SDL_RenderPresent(mRenderer);     
 }

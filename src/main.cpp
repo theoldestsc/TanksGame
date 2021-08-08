@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     Game* gameInstance = Game::Instance();
-    bool success = gameInstance->initialize();
+    bool success = gameInstance->Initialize();
     if(success)
     {
         gameInstance->RunLoop();

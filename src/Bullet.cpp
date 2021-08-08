@@ -2,14 +2,17 @@
 #include "Bullet.h"
 #include "Game.h"
 
-Bullet::Bullet(SDL_Renderer* renderer, Point<int> startPos):
-                                        state(State::MOVE)
+Bullet::Bullet(const LoaderParams* pParams):SDLGameObject(pParams),
+                                            state(State::MOVE)
 {
-    this->startPos = startPos;
-    this->renderer = renderer;
+    x = pParams->getX();
+    y = pParams->getY();
+    width = pParams->getWidth();
+    height = pParams->getHeight();
+    textureID = pParams->getTextureID();
 }
 
-void Bullet::Load(const char* image_path)
+/*void Bullet::Load(const char* image_path)
 {
     this->texture = IMG_LoadTexture(this->renderer, image_path);
     if(texture == NULL)
@@ -19,7 +22,7 @@ void Bullet::Load(const char* image_path)
 
     this->bulletRect.x = static_cast<int>(startPos.x); // TODO: FIX THIS with another initialization
     this->bulletRect.y = static_cast<int>(startPos.y);
-}
+}*/
 
 
 void Bullet::setDirection(Direction dir)
@@ -27,11 +30,6 @@ void Bullet::setDirection(Direction dir)
     this->mBulletDir = dir;
 }
 
-void Bullet::Render()
-{
-    SDL_RenderCopy(this->renderer, this->texture, NULL, 
-                    &this->bulletRect);
-}
 
 void Bullet::Update(float deltaTime)
 {
@@ -39,44 +37,44 @@ void Bullet::Update(float deltaTime)
     {
         if(this->mBulletDir == Direction::UP)
         {
-            this->bulletRect.y += static_cast<int>(-300.0f * deltaTime);
-            if(this->bulletRect.y < 0)
+            this->y += static_cast<int>(-300.0f * deltaTime);
+            if(this->y < 0)
             {
                 state = State::COLLISION;
             }
-            else if (this->bulletRect.y > (HEIGHT - this->bulletRect.h))
+            else if (this->y > (HEIGHT - height))
             {
                 state = State::COLLISION;
             }
         }
         else if(this->mBulletDir == Direction::DOWN)
         {
-            this->bulletRect.y += static_cast<int>(300.0f * deltaTime);
-            if(this->bulletRect.y < 0)
+            this->y += static_cast<int>(300.0f * deltaTime);
+            if(this->y < 0)
             {
                 state = State::COLLISION;
             }
-            else if (this->bulletRect.y > (HEIGHT - this->bulletRect.h))
+            else if (this->y > (HEIGHT - this->height))
             {
                 state = State::COLLISION;
             }
         }
         else if(this->mBulletDir == Direction::RIGHT)
         {
-            bulletRect.x += static_cast<int>( 300.0f * deltaTime);
-            if (bulletRect.x > (WIDTH - bulletRect.w))
+            this->x += static_cast<int>( 300.0f * deltaTime);
+            if (this->x > (WIDTH - this->width))
             {
                 state = State::COLLISION;
             }
         }
         else if(this->mBulletDir == Direction::LEFT)
         {
-            bulletRect.x += static_cast<int>(-300.0f * deltaTime);
-            if(bulletRect.x < 0)
+            this->x += static_cast<int>(-300.0f * deltaTime);
+            if(this->x < 0)
             {
                 state = State::COLLISION;
             }
-            else if (bulletRect.x > (WIDTH - bulletRect.w))
+            else if (this->x > (WIDTH - this->width))
             {
                 state = State::COLLISION;
             }
@@ -84,17 +82,23 @@ void Bullet::Update(float deltaTime)
     }
 }
 
+void Bullet::Draw()
+{
+    TextureManager::Instance()->Draw(textureID, x, y, width, height,
+                                     Game::Instance()->GetRenderer());
+}
+
 void Bullet::Reinitialize(Point<int> mBallPos, Direction dir)
 {
-    bulletRect.x = mBallPos.x;
-    bulletRect.y = mBallPos.y;
+    this->x = mBallPos.x;
+    this->y = mBallPos.y;
     state = State::MOVE;
     setDirection(dir);
 }
 
 Bullet::~Bullet()
 {
-    SDL_DestroyTexture(texture);
+    
 }
 
 
