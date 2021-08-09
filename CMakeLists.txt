@@ -1,11 +1,26 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Tanks VERSION 0.1.0)
 
-#include(CTest)
-#enable_testing()
-#set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-#set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-#include(CPack)
+
+
+option(ENABLE_UNIT_TESTS "Enable unittest" ON)
+message(STATUS "Enable testing: ${ENABLE_UNIT_TESTS}")
+if(ENABLE_UNIT_TESTS)
+	message(STATUS "Compiling tests ...")
+	enable_testing()
+	add_executable(
+	  hello_test
+	  tests/hello_test.cpp
+	)
+	target_link_libraries(
+	  hello_test
+	  gtest
+	  pthread
+	  gtest_main
+	)
+	include(GoogleTest)
+	gtest_discover_tests(hello_test)
+endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
@@ -32,5 +47,6 @@ else()
 	add_executable(main ${SOURCES})
 	message(${CMAKE_CURRENT_SOURCE_DIR})
 	target_link_libraries(main ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+	file(COPY Sprites DESTINATION .)
 endif()
 
