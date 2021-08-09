@@ -21,4 +21,6 @@ set_target_properties(hello_test
 					  CMAKE_CXX_STANDARD 17
 					)
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+add_test(Hello_test hello_test)
+add_custom_target(check COMMAND "bin/./hello_test"
+                  DEPENDS "bin/hello_test")
