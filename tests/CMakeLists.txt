@@ -4,16 +4,14 @@ project(Tests VERSION 0.1.0)
 
 message(STATUS "Compiling tests ...")
 enable_testing()
-add_executable(
-  hello_test
-  hello_test.cpp
-)
-target_link_libraries(
-  hello_test
-  gtest
-  pthread
-  gtest_main
-)
+add_executable(hello_test
+               hello_test.cpp
+              )
+target_link_libraries(hello_test
+                      gtest
+                      pthread
+                      gtest_main
+                    )
 set_target_properties(hello_test
 	  				  PROPERTIES
 					  ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests/lib"
