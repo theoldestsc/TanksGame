@@ -21,9 +21,7 @@ if(NOT SDL2_FOUND)
 	message(FATAL_ERROR "SDL2 NOT FOUND")
 	return()
 else()
-	add_compile_options("-g"
-						"-Wall"
-						"$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>")
+	
 	include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} headers/)
     file(GLOB SOURCES "src/*.cpp")
 	add_executable(main ${SOURCES})
@@ -34,6 +32,9 @@ else()
 						  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 						  CMAKE_CXX_STANDARD_REQUIRED ON
 						  CMAKE_CXX_STANDARD 17
+						  CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++17"
+						  CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g"
+						  CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2"
 						 )
 	target_link_libraries(main 
 						  ${SDL2_LIBRARIES} 
