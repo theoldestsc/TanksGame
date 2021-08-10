@@ -4,11 +4,6 @@ project(Tanks VERSION 0.1.0)
 option(ENABLE_UNIT_TESTS "Enable unittest" ON)
 message(STATUS "Enable testing: ${ENABLE_UNIT_TESTS}")
 
-if(ENABLE_UNIT_TESTS)
-	add_subdirectory(tests)
-endif()
-
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -21,9 +16,8 @@ if(NOT SDL2_FOUND)
 	message(FATAL_ERROR "SDL2 NOT FOUND")
 	return()
 else()
-	
 	include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} headers/)
-    file(GLOB SOURCES "src/*.cpp")
+    file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
 	add_executable(main ${SOURCES})
 	set_target_properties(main
 	  					  PROPERTIES
@@ -41,5 +35,8 @@ else()
 						  ${SDL2_IMAGE_LIBRARIES})
 	message(STATUS "Copy sprites folder")
 	file(COPY Sprites DESTINATION .)
+	if(ENABLE_UNIT_TESTS)
+		add_subdirectory(tests)
+	endif()
 endif()
 
