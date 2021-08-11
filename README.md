@@ -7,10 +7,11 @@ cd build
 cmake ..
 make -j4
 ```
-# Build TESTS
+# Build and Run Tests
 ```
 mkdir build
 cd build
 cmake -DENABLE_UNIT_TESTS=ON ..
 make -j4
+ctest
 ```
