@@ -28,50 +28,50 @@ void Tank::Update(float deltaTime)
     {
         if(this->mTankDir == Direction::UP)
         {
-            this->y += static_cast<int>(-300.0f * deltaTime);
-            if(this->y < 0)
+            this->position.setY(this->position.getY() + static_cast<int>(-300.0f * deltaTime));
+            if(this->position.getY() < 0)
             {
-                this->y = 0;
+                this->position.setY(0);
             }
-            else if (this->y > (HEIGHT - height))
+            else if (this->position.getY() > (HEIGHT - height))
             {
-                this->y = HEIGHT;
+                this->position.setY(HEIGHT - height);
             }
         }
         else if(this->mTankDir == Direction::DOWN)
         {
 
-            this->y += static_cast<int>(300.0f * deltaTime);
-            if(this->y < 0)
+            this->position.setY(this->position.getY() + static_cast<int>(300.0f * deltaTime));
+            if(this->position.getY() < 0)
             {
-                this->y = 0;
+                this->position.setY(0);
             }
-            else if (this->y > (HEIGHT - height))
+            else if (this->position.getY() > (HEIGHT - height))
             {
-                this->y = HEIGHT - height;
+                this->position.setY(HEIGHT - height);
             }
         }
 
         else if(mTankDir == Direction::RIGHT)
         {
 
-            this->x += static_cast<int>( 300.0f * deltaTime);
-            if (this->x > (WIDTH - this->width))
+            this->position.setX(this->position.getX() + static_cast<int>( 300.0f * deltaTime));
+            if (this->position.getX() > (WIDTH - this->width))
             {
-                this->x = WIDTH - this->width;
+                this->position.setX(WIDTH - this->width);
             }
         }
         else if(mTankDir == Direction::LEFT)
         {
         
-            this->x += static_cast<int>(-300.0f * deltaTime);
-            if(this->x < 0)
+            this->position.setX(position.getX() + static_cast<int>(-300.0f * deltaTime));
+            if(this->position.getX() < 0)
             {
-                this->x = 0;
+                this->position.setX(0);
             }
-            else if (this->x > (WIDTH - this->width))
+            else if (this->position.getX() > (WIDTH - this->width))
             {
-                this->x = WIDTH - this->width;
+                this->position.setX(WIDTH - this->width);
             }
         }
     }
@@ -81,11 +81,11 @@ void Tank::Update(float deltaTime)
 
 void Tank::Fire()
 {  
-    int x = (this->x-3 + //TODO: Not a good approach
+    int x = (this->position.getX()-3 + //TODO: Not a good approach
              this->width/2) +
              this->width/2 *
              SDL_sin(this->mTankAngle*M_PI/180);
-    int y = (this->y-3 + //TODO: Not a good approach
+    int y = (this->position.getY()-3 + //TODO: Not a good approach
              this->height/2) - 
              this->height/2 * 
              SDL_cos(this->mTankAngle*M_PI/180);
@@ -110,7 +110,7 @@ void Tank::setState(State state)
 
 void Tank::Draw()
 {
-    TextureManager::Instance()->Draw(textureID, x, y, width, height,
+    TextureManager::Instance()->Draw(textureID, position.getX(), position.getY(), width, height,
                                     Game::Instance()->GetRenderer(), mTankAngle,
                                     SDL_FLIP_HORIZONTAL);
     for(Bullet* bullet: vBullets){

@@ -6,12 +6,12 @@ Vector2D::Vector2D(float x, float y)
     this->y = y;
 }
 
-float Vector2D::getX()
+float Vector2D::getX() const
 {
     return this->x;
 }
 
-float Vector2D::getY()
+float Vector2D::getY() const
 {
     return this->y;
 }
@@ -23,7 +23,7 @@ void Vector2D::setX(float x)
 
 void Vector2D::setY(float y)
 {
-    this->x = y;
+    this->y = y;
 }
 
 Vector2D Vector2D::operator+(const Vector2D& v2) const
@@ -46,12 +46,6 @@ Vector2D& Vector2D::operator-=(const Vector2D& v2)
     return *this;
 }
 
-/*Vector2D& operator+=(Vector2D& v1, const Vector2D& v2)
-{
-    v1.x += v2.x;
-    v1.y += v2.y;
-    return v1; 
-}*/
 
 Vector2D& Vector2D::operator*=(float scalar)
 {
@@ -65,12 +59,6 @@ Vector2D Vector2D::operator-(const Vector2D& v2) const
     return Vector2D(this->x - v2.x, this->y - v2.y);
 }
 
-/*Vector2D& operator-=(Vector2D& v1, const Vector2D& v2)
-{
-    v1.x -= v2.x;
-    v1.y -= v2.y;
-    return v1;
-}*/
 
 Vector2D Vector2D::operator/(float scalar)
 {

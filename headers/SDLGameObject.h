@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "TextureManager.h"
+#include "Vector2D.h"
 
 
 class SDLGameObject : public GameObject
@@ -14,8 +15,9 @@ class SDLGameObject : public GameObject
         virtual void Clean(){};
         
     protected:
-        int x;
-        int y;
+        Vector2D position;
+        /*Vector2D velocity;
+        Vector2D acceleration;*/
         int width;
         int height;
         int currentRow;

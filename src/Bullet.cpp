@@ -17,50 +17,54 @@ void Bullet::setDirection(Direction dir)
 
 void Bullet::Update(float deltaTime)
 {
-    if(state == State::MOVE)
+    if(this->state == State::MOVE)
     {
         if(this->mBulletDir == Direction::UP)
         {
-            this->y += static_cast<int>(-300.0f * deltaTime);
-            if(this->y < 0)
+            this->position.setY(this->position.getY() + static_cast<int>(-300.0f * deltaTime));
+            if(this->position.getY() < 0)
             {
-                state = State::COLLISION;
+                this->state = State::COLLISION;
             }
-            else if (this->y > (HEIGHT - height))
+            else if (this->position.getY() > (HEIGHT - height))
             {
-                state = State::COLLISION;
+                this->state = State::COLLISION;
             }
         }
         else if(this->mBulletDir == Direction::DOWN)
         {
-            this->y += static_cast<int>(300.0f * deltaTime);
-            if(this->y < 0)
+
+            this->position.setY(this->position.getY() + static_cast<int>(300.0f * deltaTime));
+            if(this->position.getY() < 0)
             {
-                state = State::COLLISION;
+                this->state = State::COLLISION;
             }
-            else if (this->y > (HEIGHT - this->height))
+            else if (this->position.getY() > (HEIGHT - height))
             {
-                state = State::COLLISION;
-            }
-        }
-        else if(this->mBulletDir == Direction::RIGHT)
-        {
-            this->x += static_cast<int>( 300.0f * deltaTime);
-            if (this->x > (WIDTH - this->width))
-            {
-                state = State::COLLISION;
+                this->state = State::COLLISION;
             }
         }
-        else if(this->mBulletDir == Direction::LEFT)
+
+        else if(mBulletDir == Direction::RIGHT)
         {
-            this->x += static_cast<int>(-300.0f * deltaTime);
-            if(this->x < 0)
+
+            this->position.setX(this->position.getX() + static_cast<int>( 300.0f * deltaTime));
+            if (this->position.getX() > (WIDTH - this->width))
             {
-                state = State::COLLISION;
+                this->state = State::COLLISION;
             }
-            else if (this->x > (WIDTH - this->width))
+        }
+        else if(mBulletDir == Direction::LEFT)
+        {
+        
+            this->position.setX(position.getX() + static_cast<int>(-300.0f * deltaTime));
+            if(this->position.getX() < 0)
             {
-                state = State::COLLISION;
+                this->state = State::COLLISION;
+            }
+            else if (this->position.getX() > (WIDTH - this->width))
+            {
+                this->state = State::COLLISION;
             }
         }
     }
@@ -68,14 +72,14 @@ void Bullet::Update(float deltaTime)
 
 void Bullet::Draw()
 {
-    TextureManager::Instance()->Draw(textureID, x, y, width, height,
+    TextureManager::Instance()->Draw(textureID, position.getX(), position.getY(), width, height,
                                      Game::Instance()->GetRenderer());
 }
 
 void Bullet::Reinitialize(int x, int y, Direction dir)
 {
-    this->x = x;
-    this->y = y;
+    this->position.setX(x);
+    this->position.setY(y);
     state = State::MOVE;
     setDirection(dir);
 }
