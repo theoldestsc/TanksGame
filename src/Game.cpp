@@ -19,8 +19,7 @@ Game* Game::Instance()
         gameInstance = new Game();
         return gameInstance;
     }
-    else
-        return gameInstance;
+    return gameInstance;
 }
 
 bool Game::Initialize()
@@ -61,6 +60,10 @@ bool Game::Initialize()
             return false; 
         }
     }
+    gameStateMachine = new GameStateMachine();
+
+    gameStateMachine->changeState(new MenuState());
+    
     TextureManager* textureManager = TextureManager::Instance();
 
     ret = textureManager->Load(std::string("../Sprites/tankScaled.png"),
@@ -84,6 +87,7 @@ bool Game::Initialize()
 void Game::ShutDown()
 {
     delete tankObj;
+    delete gameStateMachine;
 
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
@@ -123,7 +127,11 @@ void Game::ProcessInput()
 
     tankObj->setState(State::STOP);
     if(state[SDL_SCANCODE_ESCAPE])
-        mIsRunning = false;
+    {
+        PlayState playstate;
+        gameStateMachine->changeState(new PlayState);
+        //mIsRunning = false;
+    }
     else if(state[SDL_SCANCODE_W]){
         tankObj->setState(State::MOVE);
         tankObj->change_direction(Direction::UP);

@@ -5,9 +5,12 @@
 #include <SDL.h>
 #include <set>
 #include "DataStructures.h"
-
+#include "PlayState.h"
+#include "MenuState.h"
+#include "GameStateMachine.h"
 #include "Tank.h"
 #include "Bullet.h"
+#include <memory>
 
 
 
@@ -29,6 +32,7 @@ class Game
         void UpdateGame();
         void GenerateOutput();
 
+        GameStateMachine* gameStateMachine;
         static Game* gameInstance;
         SDL_Window* mWindow;
         SDL_Renderer* mRenderer;
