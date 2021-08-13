@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    Game* gameInstance = Game::Instance();
+    std::unique_ptr<Game>& gameInstance = Game::Instance();
     bool success = gameInstance->Initialize();
     if(success)
     {

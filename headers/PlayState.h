@@ -3,7 +3,7 @@
 
 #include "GameState.h"
 
-class PlayState : public GameState
+class PlayState : public GameState 
 {
     public:
         virtual void Update() override;

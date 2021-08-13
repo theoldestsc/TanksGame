@@ -1,7 +1,7 @@
 #include "TextureManager.h"
 
 
-TextureManager* TextureManager::textureManagerInstance = nullptr;
+std::unique_ptr<TextureManager> TextureManager::textureManagerInstance = nullptr;
 
 bool TextureManager::Load(std::string fileName, std::string
                           id, SDL_Renderer* renderer)
@@ -59,11 +59,11 @@ void TextureManager::DrawFrame(std::string id, int x, int y, int
     &destRect, 0, 0, flip);
 }
 
-TextureManager* TextureManager::Instance()
+std::unique_ptr<TextureManager>& TextureManager::Instance()
 {
     if(!textureManagerInstance)
     {
-        textureManagerInstance = new TextureManager();
+        textureManagerInstance.reset(new TextureManager());
         return textureManagerInstance;
     }
     return textureManagerInstance;
@@ -71,5 +71,5 @@ TextureManager* TextureManager::Instance()
 
 TextureManager::~TextureManager()
 {
-    delete textureManagerInstance;
+
 }

@@ -4,7 +4,7 @@
 #include "GameState.h"
 #include <vector>
 
-class GameStateMachine
+class GameStateMachine final
 {
     public:
         void pushState(GameState* pState);

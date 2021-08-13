@@ -15,14 +15,14 @@
 
 
 
-class Game
+class Game final
 {
     public:       
         bool Initialize();
         void RunLoop();
         void ShutDown();
         SDL_Renderer* GetRenderer() const;
-        static Game* Instance();
+        static std::unique_ptr<Game>& Instance();
         Game(Game &other) = delete;
         void operator=(const Game&) = delete;
         ~Game();
@@ -32,13 +32,13 @@ class Game
         void UpdateGame();
         void GenerateOutput();
 
-        GameStateMachine* gameStateMachine;
-        static Game* gameInstance;
+        std::unique_ptr<GameStateMachine> gameStateMachine;
+        static std::unique_ptr<Game> gameInstance;
         SDL_Window* mWindow;
         SDL_Renderer* mRenderer;
         bool mIsRunning;
         Uint32 mTicksCount;
-        Tank* tankObj;
+        std::unique_ptr<Tank> tankObj;
 
     protected:
         Game();

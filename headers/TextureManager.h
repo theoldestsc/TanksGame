@@ -4,8 +4,9 @@
 #include <string>
 #include <map>
 #include <SDL2/SDL_image.h>
+#include <memory>
 
-class TextureManager
+class TextureManager final
 {
     public:
         bool Load(std::string imagePath, std::string id, SDL_Renderer* rendrer);
@@ -20,14 +21,14 @@ class TextureManager
                        int currentRow, int currentFrame,
                        SDL_Renderer* rendrer,
                        SDL_RendererFlip flip = SDL_FLIP_NONE);
-        static TextureManager* Instance();
+        static std::unique_ptr<TextureManager>& Instance();
         TextureManager(TextureManager &other) = delete;
         void operator=(const TextureManager&) = delete;
         ~TextureManager();
 
     private:
         std::map<std::string, SDL_Texture*> textureMap;
-        static TextureManager* textureManagerInstance;
+        static std::unique_ptr<TextureManager> textureManagerInstance;
 
     protected:
         TextureManager(){};

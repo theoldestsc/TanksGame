@@ -1,6 +1,7 @@
 #include "Game.h"
 
-Game* Game::gameInstance = nullptr;
+
+std::unique_ptr<Game> Game::gameInstance = nullptr;
 
 Game::Game():mWindow(nullptr),
             mRenderer(nullptr),
@@ -12,11 +13,11 @@ Game::Game():mWindow(nullptr),
     
 }
 
-Game* Game::Instance()
+std::unique_ptr<Game>& Game::Instance()
 {
     if(!gameInstance)
     {
-        gameInstance = new Game();
+        gameInstance.reset(new Game);
         return gameInstance;
     }
     return gameInstance;
@@ -60,11 +61,11 @@ bool Game::Initialize()
             return false; 
         }
     }
-    gameStateMachine = new GameStateMachine();
+    gameStateMachine = std::make_unique<GameStateMachine>();
 
     gameStateMachine->changeState(new MenuState());
     
-    TextureManager* textureManager = TextureManager::Instance();
+    std::unique_ptr<TextureManager>& textureManager = TextureManager::Instance();
 
     ret = textureManager->Load(std::string("../Sprites/tankScaled.png"),
                                std::string("Tank"),
@@ -80,15 +81,12 @@ bool Game::Initialize()
                          52, 64, //TODO: Not a good approach 
                          std::string("Tank"));
 
-    tankObj = new Tank(&pParams);
+    tankObj = std::make_unique<Tank>(&pParams);
     return true;
 }
 
 void Game::ShutDown()
 {
-    delete tankObj;
-    delete gameStateMachine;
-
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     IMG_Quit();
@@ -183,5 +181,5 @@ SDL_Renderer* Game::GetRenderer() const
 
 Game::~Game()
 {
-    delete gameInstance;
+
 }

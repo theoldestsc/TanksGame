@@ -3,7 +3,7 @@
 
 #include <string>
 
-class LoaderParams
+class LoaderParams final
 {
 public:
     LoaderParams(int x, int y,
