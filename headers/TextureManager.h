@@ -25,6 +25,7 @@ class TextureManager final
         TextureManager(TextureManager &other) = delete;
         void operator=(const TextureManager&) = delete;
         ~TextureManager();
+        void clearFromTextureMap(std::string id);
 
     private:
         std::map<std::string, SDL_Texture*> textureMap;

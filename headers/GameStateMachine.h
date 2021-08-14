@@ -9,6 +9,7 @@ class GameStateMachine final
     public:
         void pushState(GameState* pState);
         void changeState(GameState* pState);
+        GameState* getState();
         void popState();
         ~GameStateMachine();
     private:

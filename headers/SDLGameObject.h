@@ -12,7 +12,7 @@ class SDLGameObject : public GameObject
         SDLGameObject(const LoaderParams* pParams);
         virtual void Draw();
         virtual void Update(float deltaTime){};
-        virtual void Clean(){};
+        virtual void Clean();
         
     protected:
         Vector2D position;

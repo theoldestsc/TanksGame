@@ -106,30 +106,11 @@ void Game::RunLoop()
 
 void Game::ProcessInput()
 {
-    /*SDL_Event event;
-
-    while (SDL_PollEvent(&event))
-    {
-        switch (event.type)
-        {
-        case SDL_QUIT:
-            mIsRunning = false;
-            break;
-        case SDL_KEYUP:
-            
-            break;
-        default:
-            break;
-        }
-    }       
-    const Uint8* state = SDL_GetKeyboardState(NULL);
-    */
     InputManager::Instance()->Update();
     tankObj->setState(State::STOP);
     if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
     {
-        PlayState playstate;
-        gameStateMachine->changeState(new PlayState);
+        
     }
     else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_W)){
         tankObj->setState(State::MOVE);
@@ -162,7 +143,8 @@ void Game::UpdateGame()
         deltaTime = 0.05f;
     mTicksCount = SDL_GetTicks();
     tankObj->Update(deltaTime);
-    
+    GameState* state = gameStateMachine->getState();
+    state->Update();
 }
 
 void Game::GenerateOutput()
@@ -170,9 +152,9 @@ void Game::GenerateOutput()
     SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
     SDL_RenderClear(mRenderer);
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-    
-    tankObj->Draw();
-   
+    GameState* state = gameStateMachine->getState();
+    //tankObj->Draw();
+    state->Render();
     SDL_RenderPresent(mRenderer);     
 }
 

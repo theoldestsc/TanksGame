@@ -13,6 +13,11 @@ SDLGameObject::SDLGameObject(const LoaderParams* pParams):
     currentFrame = 1;
 }
 
+void SDLGameObject::Clean()
+{
+    delete this;
+}
+
 void SDLGameObject::Draw()
 {
     TextureManager::Instance()->DrawFrame(textureID, (int)position.getX(), (int)position.getY(),

@@ -69,6 +69,13 @@ std::unique_ptr<TextureManager>& TextureManager::Instance()
     return textureManagerInstance;
 }
 
+void TextureManager::clearFromTextureMap(std::string id)
+{
+    textureMap.erase(id);
+}
+
+
+
 TextureManager::~TextureManager()
 {
 

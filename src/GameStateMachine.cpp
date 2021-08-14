@@ -2,8 +2,14 @@
 
 void GameStateMachine::pushState(GameState *pState)
 {
-    gameStates.emplace_back(pState);
+    gameStates.push_back(pState);
     gameStates.back()->onEnter();
+    
+}
+
+GameState* GameStateMachine::getState()
+{
+    return gameStates.back();
 }
 
 void GameStateMachine::popState()
@@ -20,8 +26,9 @@ void GameStateMachine::popState()
 
 GameStateMachine::~GameStateMachine()
 {
-    for(auto gameState : gameStates)
+    for(auto *gameState : gameStates)
     {
+        gameState->onExit();
         delete gameState;
     }
     gameStates.clear();
@@ -33,16 +40,19 @@ void GameStateMachine::changeState(GameState *pState)
     {
         if(gameStates.back()->getStateID() == pState->getStateID())
         {
+            std::cout << "changeState First if\n";
             delete gameStates.back();
             gameStates.pop_back(); //TODO: Rewrite memmory management 
             //return; // do nothing
         }
         else if(gameStates.back()->onExit())
         {
+            std::cout << "changeState Second if\n";
             delete gameStates.back();
             gameStates.pop_back();
         }
     }
+    std::cout << "push\n";
     this->pushState(pState);
 }
 

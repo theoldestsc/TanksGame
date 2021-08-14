@@ -1,3 +1,6 @@
+#ifndef VECTOR2D_H
+#define VECTOR2D_H
+
 #include <SDL.h>
 
 class Vector2D final
@@ -21,3 +24,4 @@ class Vector2D final
         float x;
         float y;
 };
+#endif

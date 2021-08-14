@@ -25,8 +25,6 @@ class Game final
         void Quit(){mIsRunning = false;}
         SDL_Renderer* GetRenderer() const;
         static std::unique_ptr<Game>& Instance();
-        Game(Game &other) = delete;
-        void operator=(const Game&) = delete;
         ~Game();
         
     private:
@@ -41,6 +39,8 @@ class Game final
         bool mIsRunning;
         Uint32 mTicksCount;
         std::unique_ptr<Tank> tankObj;
+        Game(Game &other) = delete;
+        void operator=(const Game&) = delete;
 
     protected:
         Game();
