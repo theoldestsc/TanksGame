@@ -8,6 +8,7 @@
 #include "PlayState.h"
 #include "MenuState.h"
 #include "GameStateMachine.h"
+#include "InputManager.h"
 #include "Tank.h"
 #include "Bullet.h"
 #include <memory>
@@ -21,6 +22,7 @@ class Game final
         bool Initialize();
         void RunLoop();
         void ShutDown();
+        void Quit(){mIsRunning = false;}
         SDL_Renderer* GetRenderer() const;
         static std::unique_ptr<Game>& Instance();
         Game(Game &other) = delete;

@@ -93,6 +93,7 @@ void Game::ShutDown()
     SDL_Quit();
 }
 
+
 void Game::RunLoop()
 {
     while(mIsRunning)
@@ -105,7 +106,7 @@ void Game::RunLoop()
 
 void Game::ProcessInput()
 {
-    SDL_Event event;
+    /*SDL_Event event;
 
     while (SDL_PollEvent(&event))
     {
@@ -120,36 +121,37 @@ void Game::ProcessInput()
         default:
             break;
         }
-    }        
+    }       
     const Uint8* state = SDL_GetKeyboardState(NULL);
-
+    */
+    InputManager::Instance()->Update();
     tankObj->setState(State::STOP);
-    if(state[SDL_SCANCODE_ESCAPE])
+    if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
     {
         PlayState playstate;
         gameStateMachine->changeState(new PlayState);
-        //mIsRunning = false;
     }
-    else if(state[SDL_SCANCODE_W]){
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_W)){
         tankObj->setState(State::MOVE);
         tankObj->change_direction(Direction::UP);
     }
-    else if(state[SDL_SCANCODE_S]){
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_S)){
         tankObj->setState(State::MOVE);
         tankObj->change_direction(Direction::DOWN);
     }
-    else if(state[SDL_SCANCODE_D]){
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_D)){
         tankObj->setState(State::MOVE);
         tankObj->change_direction(Direction::RIGHT);
     }
-    else if(state[SDL_SCANCODE_A]){
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_A)){
         tankObj->setState(State::MOVE);
         tankObj->change_direction(Direction::LEFT);
     }
-    if(state[SDL_SCANCODE_SPACE])
+    if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_SPACE))
     {
         tankObj->Fire();
     }
+    
 }
 
 void Game::UpdateGame()
