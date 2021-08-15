@@ -41,3 +41,4 @@ else()
 	endif()
 endif()
 
+#cmake .. -DCMAKE_CXX_FLAGS="-fsanitize=address -fsanitize=leak add this options and check"

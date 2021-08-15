@@ -29,7 +29,6 @@ GameStateMachine::~GameStateMachine()
     for(auto *gameState : gameStates)
     {
         gameState->onExit();
-        delete gameState;
     }
     gameStates.clear();
 }

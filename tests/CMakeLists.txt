@@ -32,6 +32,4 @@ foreach(TEST_SRC_NAME ${TEST_SOURCES})
              COMMAND ${EXECUTABLE_NAME})
 endforeach(TEST_SRC_NAME ${TEST_SOURCES})
 include(GoogleTest)
-
-
                   
