@@ -2,7 +2,15 @@
 #include <iostream>
 #include "Game.h"
 
+/*TODO: Clean some useless 
+        virtual from classes add 
+        'final' for some classes.
+        Clean include's tree
+*/
 
+/*TODO:Use smartpointers except new
+       where we can
+*/
 int main(int argc, char *argv[])
 {
     std::unique_ptr<Game>& gameInstance = Game::Instance();
