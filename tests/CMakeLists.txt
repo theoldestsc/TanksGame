@@ -4,7 +4,10 @@ project(Tests VERSION 0.1.0)
 
 message(STATUS "Compiling tests ...")
 
-file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  "*.cpp")
+#		/*Bad practice but if comfortbale uncomment line below and comment set(SOURCES ...*\
+#file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  "*.cpp")
+
+set(TEST_SOURCES "TVector2d.cpp")
 
 include_directories(${SDL2_INCLUDE_DIRS} 
                     ${SDL2_IMAGE_INCLUDE_DIRS}
