@@ -6,12 +6,9 @@
 class GameObject
 {
     public:
-        virtual void Clean() = 0;
         virtual void Draw() = 0;
-        virtual void Update(float deltaTime) = 0;
-    
-    protected:
-        GameObject(const LoaderParams* pParams){};
-        virtual ~GameObject() {};
+        virtual void Update(float deltatime) = 0;
+        virtual void ProcessInput() = 0;
+        virtual ~GameObject(){};
 };
 #endif

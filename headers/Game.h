@@ -5,16 +5,15 @@
 #include <SDL.h>
 #include <set>
 #include "DataStructures.h"
-#include "PlayState.h"
-#include "MenuState.h"
-#include "GameStateMachine.h"
-#include "InputManager.h"
-#include "Tank.h"
+
+
+//#include "InputManager.h"
+//#include "Tank.h"
 #include "Bullet.h"
 #include <memory>
 
 
-
+class GameStateMachine;
 
 class Game final
 {
@@ -24,6 +23,7 @@ class Game final
         void ShutDown();
         void Quit(){mIsRunning = false;}
         SDL_Renderer* GetRenderer() const;
+        std::unique_ptr<GameStateMachine>& getStateMachine();
         static std::unique_ptr<Game>& Instance();
         ~Game();
         
@@ -38,7 +38,7 @@ class Game final
         SDL_Renderer* mRenderer;
         bool mIsRunning;
         Uint32 mTicksCount;
-        std::unique_ptr<Tank> tankObj;
+        //std::unique_ptr<Tank> tankObj;
         Game(Game &other) = delete;
         void operator=(const Game&) = delete;
 

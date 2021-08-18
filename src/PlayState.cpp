@@ -7,24 +7,74 @@ std::string PlayState::getStateID() const
     return playID; 
 }
     
-void PlayState::Update()
+void PlayState::ProcessInput()
 {
-    // nothing for now
+    for(auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ++it)
+    {
+        (*it)->ProcessInput();
+    }
+
 }
 
 void PlayState::Render()
 {
-    // nothing for now
+    for(auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ++it)
+    {
+        (*it)->Draw();
+    }
+
+}
+
+void PlayState::Update(float deltaTime)
+{
+    for(auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ++it)
+    {
+        (*it)->Update(deltaTime);
+    }
 }
 
 bool PlayState::onEnter()
 {
-    std::cout << "entering PlayState\n";
+    if(!TextureManager::Instance()->Load("../Sprites/tankScaled.png",
+        "Tank2", Game::Instance()->GetRenderer()))
+    {
+    return false;
+    }
+    /*TODO: Not a good approach, 
+            size depends on 
+            screen resolution/window size 
+    */
+    LoaderParams pParams(5, 100,
+                         52, 64, 
+                         std::string("Tank2"));
+    GameObject* tankObj = new Tank(&pParams);
+    
+    m_gameObjects.push_back(tankObj);
     return true;
 }
 
 bool PlayState::onExit()
 {
-    std::cout << "exiting PlayState\n";
+    for(auto it = m_gameObjects.begin(); it != m_gameObjects.end();)
+    {
+        delete *it;
+        it = m_gameObjects.erase(it);
+    }
+    /*TODO: I Don't know, i guess would't be better 
+            search every texture in game when it contains all textures(like now).
+            Maybe clean correctly and load as needed?
+            Now it cleans only in destroing app by SDL_DestroyRender()
+
+            TextureManager::Instance()->clearFromTextureMap("Tank2");
+    */
     return true;
+}
+
+PlayState::~PlayState()
+{
+    for(auto it = m_gameObjects.begin(); it != m_gameObjects.end();)
+    {
+        delete *it;
+        it = m_gameObjects.erase(it);
+    }
 }

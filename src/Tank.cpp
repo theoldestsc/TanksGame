@@ -12,8 +12,11 @@ Tank::Tank(const LoaderParams* pParams):SDLGameObject(pParams),
 
 Tank::~Tank()
 {
-    for(Bullet* bullet : vBullets)
-        delete bullet;
+    for(auto it = vBullets.begin(); it != vBullets.end();)
+    {
+        delete (*it);
+        it = vBullets.erase(it);
+    }
 }
 
 void Tank::change_direction(Direction dir)
@@ -22,8 +25,40 @@ void Tank::change_direction(Direction dir)
     this->mTankAngle = 90*dir;
 }
 
+void Tank::ProcessInput()
+{
+    this->setState(State::STOP);
+    if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
+    {
+     /*TODO: This if place above, in PlayState class
+             in order to change in PAUSE state
+     */    
+    }
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_W)){
+        this->setState(State::MOVE);
+        this->change_direction(Direction::UP);
+    }
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_S)){
+        this->setState(State::MOVE);
+        this->change_direction(Direction::DOWN);
+    }
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_D)){
+        this->setState(State::MOVE);
+        this->change_direction(Direction::RIGHT);
+    }
+    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_A)){
+        this->setState(State::MOVE);
+        this->change_direction(Direction::LEFT);
+    }
+    if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_SPACE))
+    {
+        this->Fire();
+    }
+}
+
 void Tank::Update(float deltaTime)
 {
+    
     if(this->state == State::MOVE)
     {
         if(this->mTankDir == Direction::UP)
@@ -81,11 +116,15 @@ void Tank::Update(float deltaTime)
 
 void Tank::Fire()
 {  
-    int x = (this->position.getX()-3 + //TODO: Not a good approach
+    /*TODO:'getX()-3' - was added to center image 
+            of bullet, need to do something with 
+            image sizes and positions
+    */
+    int x = (this->position.getX()-3 + 
              this->width/2) +
              this->width/2 *
              SDL_sin(this->mTankAngle*M_PI/180);
-    int y = (this->position.getY()-3 + //TODO: Not a good approach
+    int y = (this->position.getY()-3 +
              this->height/2) - 
              this->height/2 * 
              SDL_cos(this->mTankAngle*M_PI/180);
@@ -95,8 +134,12 @@ void Tank::Fire()
             return;
         }
     }
+    /*TODO: Not a good approach, 
+            size depends on 
+            screen resolution/window size 
+    */
     LoaderParams pParams(x, y,
-                         7, 7, //TODO: Not a good approach
+                         7, 7,
                          std::string("Bullet"));
     Bullet* bullet = new Bullet(&pParams);
     bullet->setDirection(this->mTankDir);

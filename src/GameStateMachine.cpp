@@ -1,58 +1,53 @@
 #include "GameStateMachine.h"
 
-void GameStateMachine::pushState(GameState *pState)
+
+void GameStateMachine::setNextState(std::string id)
 {
-    gameStates.push_back(pState);
-    gameStates.back()->onEnter();
-    
+    //TODO:CHECK THIS IN DEBUG ONLY
+    nextState = gameStates[id];
 }
 
-GameState* GameStateMachine::getState()
+void GameStateMachine::ProcessInput()
 {
-    return gameStates.back();
+   if(nextState)
+   {
+       if(currentState->onExit())
+       {
+           currentState = nextState;
+           currentState->onEnter();
+           nextState = nullptr;
+       }
+   }
+   currentState->ProcessInput();
 }
 
-void GameStateMachine::popState()
+void GameStateMachine::Update(float deltaTime)
 {
-    if(!gameStates.empty())
-    {
-        if(gameStates.back()->onExit())
-        {
-            delete gameStates.back();
-            gameStates.pop_back();
-        }
-    }
+   currentState->Update(deltaTime);
+}
+
+void GameStateMachine::Render()
+{
+    currentState->Render();
+}
+
+GameStateMachine::GameStateMachine():nextState(nullptr)
+{
+    MenuState* menu = new MenuState();
+    PlayState* play = new PlayState();
+
+    gameStates["MENU"] = menu;
+    gameStates["PLAY"] = play;
+
+    currentState = menu;
+    menu->onEnter();
 }
 
 GameStateMachine::~GameStateMachine()
 {
-    for(auto *gameState : gameStates)
+    for(auto it = gameStates.begin(); it != gameStates.end();)
     {
-        gameState->onExit();
+        delete it->second;
+        it = gameStates.erase(it);
     }
-    gameStates.clear();
 }
-
-void GameStateMachine::changeState(GameState *pState)
-{
-    if(!gameStates.empty())
-    {
-        if(gameStates.back()->getStateID() == pState->getStateID())
-        {
-            std::cout << "changeState First if\n";
-            delete gameStates.back();
-            gameStates.pop_back(); //TODO: Rewrite memmory management 
-            //return; // do nothing
-        }
-        else if(gameStates.back()->onExit())
-        {
-            std::cout << "changeState Second if\n";
-            delete gameStates.back();
-            gameStates.pop_back();
-        }
-    }
-    std::cout << "push\n";
-    this->pushState(pState);
-}
-
-

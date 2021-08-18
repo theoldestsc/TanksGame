@@ -3,6 +3,7 @@
 
 #include "SDLGameObject.h"
 #include "DataStructures.h"
+#include "InputManager.h"
 #include <Bullet.h>
 #include <set>
 class Game;
@@ -17,6 +18,7 @@ class Tank : public SDLGameObject
         void setState(State state);
         void Fire();
         virtual void Draw() override;
+        virtual void ProcessInput() override;
 
     private:
         std::set<Bullet*> vBullets;

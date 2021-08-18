@@ -2,19 +2,24 @@
 #define GAME_STATE_MACHIENE_H
 
 #include "GameState.h"
-#include <vector>
+#include <map>
+#include <string>
+#include "MenuState.h"
+#include "PlayState.h"
 
 class GameStateMachine final
 {
     public:
-        void pushState(GameState* pState);
-        void changeState(GameState* pState);
-        GameState* getState();
-        void popState();
+        GameStateMachine();
+        void ProcessInput();
+        void Render();
+        void Update(float deltaTime);
+        void setNextState(std::string stateId);
         ~GameStateMachine();
     private:
-        std::vector<GameState*> gameStates;
-
+        std::map<std::string, GameState*> gameStates;
+        GameState* currentState;
+        GameState* nextState;
 };
 
 #endif

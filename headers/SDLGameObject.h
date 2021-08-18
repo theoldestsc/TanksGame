@@ -10,10 +10,9 @@ class SDLGameObject : public GameObject
 {
     public:
         SDLGameObject(const LoaderParams* pParams);
-        virtual void Draw();
-        virtual void Update(float deltaTime){};
-        virtual void Clean();
-        
+        virtual void Draw() override;
+        virtual void Update(float deltatime){};
+        virtual void ProcessInput(){};
     protected:
         Vector2D position;
         /*Vector2D velocity;

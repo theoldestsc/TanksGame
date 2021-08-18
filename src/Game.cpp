@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "GameStateMachine.h"
 
 
 std::unique_ptr<Game> Game::gameInstance = nullptr;
@@ -6,8 +7,8 @@ std::unique_ptr<Game> Game::gameInstance = nullptr;
 Game::Game():mWindow(nullptr),
             mRenderer(nullptr),
             mTicksCount(0),
-            mIsRunning(true),
-            tankObj(nullptr)
+            mIsRunning(true)
+            //tankObj(nullptr)
             
 {
     
@@ -25,6 +26,7 @@ std::unique_ptr<Game>& Game::Instance()
 
 bool Game::Initialize()
 {
+    //TODO: LOG output through all game in debug only
     int sdlResult = SDL_Init(SDL_INIT_VIDEO);
     bool ret;
 
@@ -62,8 +64,6 @@ bool Game::Initialize()
         }
     }
     gameStateMachine = std::make_unique<GameStateMachine>();
-
-    gameStateMachine->changeState(new MenuState());
     
     std::unique_ptr<TextureManager>& textureManager = TextureManager::Instance();
 
@@ -77,11 +77,6 @@ bool Game::Initialize()
                                mRenderer);
     if(!ret)
         return false;
-    LoaderParams pParams(5, 100,
-                         52, 64, //TODO: Not a good approach 
-                         std::string("Tank"));
-
-    tankObj = std::make_unique<Tank>(&pParams);
     return true;
 }
 
@@ -107,32 +102,7 @@ void Game::RunLoop()
 void Game::ProcessInput()
 {
     InputManager::Instance()->Update();
-    tankObj->setState(State::STOP);
-    if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
-    {
-        
-    }
-    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_W)){
-        tankObj->setState(State::MOVE);
-        tankObj->change_direction(Direction::UP);
-    }
-    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_S)){
-        tankObj->setState(State::MOVE);
-        tankObj->change_direction(Direction::DOWN);
-    }
-    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_D)){
-        tankObj->setState(State::MOVE);
-        tankObj->change_direction(Direction::RIGHT);
-    }
-    else if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_A)){
-        tankObj->setState(State::MOVE);
-        tankObj->change_direction(Direction::LEFT);
-    }
-    if(InputManager::Instance()->isKeyDown(SDL_SCANCODE_SPACE))
-    {
-        tankObj->Fire();
-    }
-    
+    gameStateMachine->ProcessInput();  
 }
 
 void Game::UpdateGame()
@@ -142,9 +112,7 @@ void Game::UpdateGame()
     if(deltaTime > 0.05f)
         deltaTime = 0.05f;
     mTicksCount = SDL_GetTicks();
-    tankObj->Update(deltaTime);
-    GameState* state = gameStateMachine->getState();
-    state->Update();
+    gameStateMachine->Update(deltaTime);
 }
 
 void Game::GenerateOutput()
@@ -152,15 +120,18 @@ void Game::GenerateOutput()
     SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
     SDL_RenderClear(mRenderer);
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-    GameState* state = gameStateMachine->getState();
-    //tankObj->Draw();
-    state->Render();
-    SDL_RenderPresent(mRenderer);     
+    gameStateMachine->Render();
+    SDL_RenderPresent(mRenderer);  
 }
 
 SDL_Renderer* Game::GetRenderer() const 
 { 
     return mRenderer; 
+}
+
+std::unique_ptr<GameStateMachine>& Game::getStateMachine()
+{
+    return gameStateMachine;
 }
 
 Game::~Game()
