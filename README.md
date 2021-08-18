@@ -15,3 +15,11 @@ cmake -DENABLE_UNIT_TESTS=ON ..
 make -j4
 ctest
 ```
+
+# Build with sanitizer
+```
+mkdir build
+cd build
+cmake -DENABLE_SANITIZER=ON ..
+make -j4
+```
