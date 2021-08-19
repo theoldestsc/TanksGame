@@ -36,6 +36,7 @@ void TextureManager::Draw(std::string id, int x, int y,
     srcRect.h = destRect.h = height;
     destRect.x = x;
     destRect.y = y;
+    /*TODO:check textureMap[id] for debug only*/
     SDL_RenderCopyEx(renderer, textureMap[id], &srcRect, 
                      &destRect, 
                      angle, 
