@@ -65,18 +65,7 @@ bool Game::Initialize()
     }
     gameStateMachine = std::make_unique<GameStateMachine>();
     
-    std::unique_ptr<TextureManager>& textureManager = TextureManager::Instance();
-
-    ret = textureManager->Load(std::string("../Sprites/tankScaled.png"),
-                               std::string("Tank"),
-                               mRenderer);
-    if(!ret)
-        return false;
-    ret = textureManager->Load(std::string("../Sprites/Bullet_Red.png"), 
-                               std::string("Bullet"), 
-                               mRenderer);
-    if(!ret)
-        return false;
+    
     return true;
 }
 

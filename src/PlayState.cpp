@@ -35,18 +35,21 @@ void PlayState::Update(float deltaTime)
 
 bool PlayState::onEnter()
 {
-    if(!TextureManager::Instance()->Load("../Sprites/tankScaled.png",
-        "Tank2", Game::Instance()->GetRenderer()))
-    {
-    return false;
-    }
+    if(!TextureManager::Instance()->Load(std::string("../Sprites/tankScaled.png"),
+                               std::string("Tank"),
+                               Game::Instance()->GetRenderer()))
+        return false;
+    if(!TextureManager::Instance()->Load(std::string("../Sprites/Bullet_Red.png"), 
+                               std::string("Bullet"), 
+                               Game::Instance()->GetRenderer()))
+        return false;
     /*TODO: Not a good approach, 
             size depends on 
             screen resolution/window size 
     */
     LoaderParams pParams(5, 100,
                          52, 64, 
-                         std::string("Tank2"));
+                         std::string("Tank"));
     GameObject* tankObj = new Tank(&pParams);
     
     m_gameObjects.push_back(tankObj);
