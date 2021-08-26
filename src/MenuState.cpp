@@ -1,6 +1,7 @@
 #include "MenuState.h"
 #include "MenuButton.h"
 
+
 const std::string MenuState::menuID = "MENU";
 
 std::string MenuState::getStateID() const
@@ -29,10 +30,10 @@ void MenuState::Render()
 bool MenuState::onEnter()
 {
     if(!TextureManager::Instance()->Load("../Sprites/playbutton.png", "playbutton", 
-                                        Game::Instance()->GetRenderer()))
+                                        VideoManager::Instance()->GetRenderer()))
         return false;
-    if(!TextureManager::Instance()->Load("../Sprites/exitbutton.png", 
-                                        "exitbutton", Game::Instance()->GetRenderer()))
+    if(!TextureManager::Instance()->Load("../Sprites/exitbutton.png", "exitbutton", 
+                                         VideoManager::Instance()->GetRenderer()))
         return false;
 
     LoaderParams params2 = LoaderParams(100, 100, 400, 100, "playbutton");
@@ -55,7 +56,7 @@ void MenuState::s_menuToPlay(const MenuButton& button)
     Game::Instance()->getStateMachine()->setNextState(button.eventID);
 }
 
-void MenuState::s_exitFromMenu(const MenuButton& button)
+void MenuState::s_exitFromMenu([[maybe_unused]]const MenuButton& button)
 {
     Game::Instance()->Quit();
 }
