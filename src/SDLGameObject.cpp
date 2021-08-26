@@ -18,5 +18,5 @@ void SDLGameObject::Draw()
     TextureManager::Instance()->DrawFrame(textureID, (int)position.getX(), (int)position.getY(),
                                           width, height, 
                                           currentRow, currentFrame,
-                                          Game::Instance()->GetRenderer());
+                                          VideoManager::Instance()->GetRenderer());
 }

@@ -37,11 +37,11 @@ bool PlayState::onEnter()
 {
     if(!TextureManager::Instance()->Load(std::string("../Sprites/tankScaled.png"),
                                std::string("Tank"),
-                               Game::Instance()->GetRenderer()))
+                               VideoManager::Instance()->GetRenderer()))
         return false;
     if(!TextureManager::Instance()->Load(std::string("../Sprites/Bullet_Red.png"), 
                                std::string("Bullet"), 
-                               Game::Instance()->GetRenderer()))
+                               VideoManager::Instance()->GetRenderer()))
         return false;
     /*TODO: Not a good approach, 
             size depends on 
