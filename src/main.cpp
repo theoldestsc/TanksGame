@@ -11,7 +11,7 @@
 /*TODO:Use smartpointers except new
        where we can
 */
-int main(int argc, char *argv[])
+int main()
 {
     std::unique_ptr<Game>& gameInstance = Game::Instance();
     bool success = gameInstance->Initialize();

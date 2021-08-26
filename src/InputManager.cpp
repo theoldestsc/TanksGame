@@ -46,6 +46,7 @@ void InputManager::Update()
         case SDL_MOUSEMOTION:
             m_mousePosition->setX(event.motion.x);
             m_mousePosition->setY(event.motion.y);
+            break;
         case SDL_MOUSEBUTTONDOWN:
             switch (event.button.button)
             {

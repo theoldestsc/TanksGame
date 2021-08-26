@@ -15,24 +15,24 @@ LoaderParams::LoaderParams(int x, int y,
 int LoaderParams::getX() const 
 { 
     return x; 
-};
+}
 
 int LoaderParams::getY() const 
 { 
     return y; 
-};
+}
 
 int LoaderParams::getWidth() const 
 { 
     return width; 
-};
+}
 
 int LoaderParams::getHeight() const 
 { 
     return height; 
-};
+}
 
 std::string LoaderParams::getTextureID() const 
 { 
     return textureID; 
-};
+}
