@@ -4,12 +4,8 @@
 
 std::unique_ptr<Game> Game::gameInstance = nullptr;
 
-Game::Game():mWindow(nullptr),
-            mRenderer(nullptr),
-            mTicksCount(0),
-            mIsRunning(true)
-            //tankObj(nullptr)
-            
+Game::Game():mIsRunning(true),
+             mTicksCount(0)
 {
     
 }
@@ -35,44 +31,26 @@ bool Game::Initialize()
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return false;
     }
-    mWindow = SDL_CreateWindow("TanksBattle", // Title
-                                SDL_WINDOWPOS_UNDEFINED, // Top left x - coordinate of window
-                                SDL_WINDOWPOS_UNDEFINED, // Top left y - coordinate of window
-                                WIDTH, // Width
-                                HEIGHT, // Height
-                                0 // Flags
-                                );
-    if(!mWindow)
+    ret = VideoManager::Instance()->Initialize();
+    if(!ret)
+        return false;
+    int imgFlags = IMG_INIT_PNG;
+    /*TODO: I think this should place in Texture Manager*/
+    if(!(IMG_Init(imgFlags)&imgFlags))
     {
-        SDL_Log("Failed to create window: %s", SDL_GetError());
-        return false;        
+        SDL_Log("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+        return false; 
     }
-    mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if(!mRenderer)
-    {
-        SDL_Log("Failed to create render: %s", SDL_GetError());
-        return false;        
-    }    
-    else
-    {
-        //Initialize PNG loading
-        int imgFlags = IMG_INIT_PNG;
-        if(!(IMG_Init(imgFlags)&imgFlags))
-        {
-            SDL_Log("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-            return false; 
-        }
-    }
+ 
     gameStateMachine = std::make_unique<GameStateMachine>();
-    
     
     return true;
 }
 
 void Game::ShutDown()
 {
-    SDL_DestroyRenderer(mRenderer);
-    SDL_DestroyWindow(mWindow);
+    /* TODO:Because order is important, rethink this */
+    VideoManager::Instance().reset();
     IMG_Quit();
     SDL_Quit();
 }
@@ -106,16 +84,16 @@ void Game::UpdateGame()
 
 void Game::GenerateOutput()
 {
-    SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
-    SDL_RenderClear(mRenderer);
-    SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(GetRenderer(), 0, 0, 255, 255);
+    SDL_RenderClear(GetRenderer());
+    SDL_SetRenderDrawColor(GetRenderer(), 255, 255, 255, 255);
     gameStateMachine->Render();
-    SDL_RenderPresent(mRenderer);  
+    SDL_RenderPresent(GetRenderer());  
 }
 
 SDL_Renderer* Game::GetRenderer() const 
 { 
-    return mRenderer; 
+    return VideoManager::Instance()->GetRenderer(); 
 }
 
 std::unique_ptr<GameStateMachine>& Game::getStateMachine()
