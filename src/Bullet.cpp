@@ -17,6 +17,9 @@ void Bullet::setDirection(Direction dir)
 
 void Bullet::Update(float deltaTime)
 {
+    int widthWindow;
+    int heightWindow;
+    VideoManager::Instance()->GetWindowSize(widthWindow, heightWindow);
     if(this->state == State::MOVE)
     {
         if(this->mBulletDir == Direction::UP)
@@ -26,7 +29,7 @@ void Bullet::Update(float deltaTime)
             {
                 this->state = State::COLLISION;
             }
-            else if (this->position.getY() > (HEIGHT - height))
+            else if (this->position.getY() > (heightWindow - height))
             {
                 this->state = State::COLLISION;
             }
@@ -39,7 +42,7 @@ void Bullet::Update(float deltaTime)
             {
                 this->state = State::COLLISION;
             }
-            else if (this->position.getY() > (HEIGHT - height))
+            else if (this->position.getY() > (heightWindow - height))
             {
                 this->state = State::COLLISION;
             }
@@ -49,20 +52,19 @@ void Bullet::Update(float deltaTime)
         {
 
             this->position.setX(this->position.getX() + static_cast<int>( 300.0f * deltaTime));
-            if (this->position.getX() > (WIDTH - this->width))
+            if (this->position.getX() > (widthWindow - this->width))
             {
                 this->state = State::COLLISION;
             }
         }
         else if(mBulletDir == Direction::LEFT)
         {
-        
             this->position.setX(position.getX() + static_cast<int>(-300.0f * deltaTime));
             if(this->position.getX() < 0)
             {
                 this->state = State::COLLISION;
             }
-            else if (this->position.getX() > (WIDTH - this->width))
+            else if (this->position.getX() > (widthWindow - this->width))
             {
                 this->state = State::COLLISION;
             }
@@ -73,7 +75,7 @@ void Bullet::Update(float deltaTime)
 void Bullet::Draw()
 {
     TextureManager::Instance()->Draw(textureID, position.getX(), position.getY(), width, height,
-                                     Game::Instance()->GetRenderer());
+                                     VideoManager::Instance()->GetRenderer());
 }
 
 void Bullet::Reinitialize(int x, int y, Direction dir)

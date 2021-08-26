@@ -2,8 +2,8 @@
 #include "Game.h"
 
 Tank::Tank(const LoaderParams* pParams):SDLGameObject(pParams),
-                                        mTankDir(Direction::UP),
                                         mTankAngle(0),
+                                        mTankDir(Direction::UP),
                                         state(State::STOP)
                                     
 {
@@ -58,6 +58,9 @@ void Tank::ProcessInput()
 
 void Tank::Update(float deltaTime)
 {
+    int widthWindow;
+    int heightWindow;
+    VideoManager::Instance()->GetWindowSize(widthWindow, heightWindow);
     
     if(this->state == State::MOVE)
     {
@@ -68,9 +71,9 @@ void Tank::Update(float deltaTime)
             {
                 this->position.setY(0);
             }
-            else if (this->position.getY() > (HEIGHT - height))
+            else if (this->position.getY() > (heightWindow - height))
             {
-                this->position.setY(HEIGHT - height);
+                this->position.setY(heightWindow - height);
             }
         }
         else if(this->mTankDir == Direction::DOWN)
@@ -81,9 +84,9 @@ void Tank::Update(float deltaTime)
             {
                 this->position.setY(0);
             }
-            else if (this->position.getY() > (HEIGHT - height))
+            else if (this->position.getY() > (heightWindow - height))
             {
-                this->position.setY(HEIGHT - height);
+                this->position.setY(heightWindow - height);
             }
         }
 
@@ -91,9 +94,9 @@ void Tank::Update(float deltaTime)
         {
 
             this->position.setX(this->position.getX() + static_cast<int>( 300.0f * deltaTime));
-            if (this->position.getX() > (WIDTH - this->width))
+            if (this->position.getX() > (widthWindow - this->width))
             {
-                this->position.setX(WIDTH - this->width);
+                this->position.setX(widthWindow - this->width);
             }
         }
         else if(mTankDir == Direction::LEFT)
@@ -104,9 +107,9 @@ void Tank::Update(float deltaTime)
             {
                 this->position.setX(0);
             }
-            else if (this->position.getX() > (WIDTH - this->width))
+            else if (this->position.getX() > (widthWindow - this->width))
             {
-                this->position.setX(WIDTH - this->width);
+                this->position.setX(widthWindow - this->width);
             }
         }
     }
@@ -154,7 +157,7 @@ void Tank::setState(State state)
 void Tank::Draw()
 {
     TextureManager::Instance()->Draw(textureID, position.getX(), position.getY(), width, height,
-                                    Game::Instance()->GetRenderer(), mTankAngle,
+                                    VideoManager::Instance()->GetRenderer(), mTankAngle,
                                     SDL_FLIP_HORIZONTAL);
     for(Bullet* bullet: vBullets){
         if(bullet->getState() != State::COLLISION)
