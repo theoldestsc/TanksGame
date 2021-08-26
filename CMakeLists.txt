@@ -35,6 +35,7 @@ set(SOURCES "src/Bullet.cpp"
 			"src/SDLGameObject.cpp"
 			"src/Tank.cpp"
 			"src/TextureManager.cpp"
+			"src/VideoManager.cpp"
 			"src/Vector2D.cpp"
 			"src/main.cpp")
 
