@@ -1,0 +1,3 @@
+/home/andrew/Works_C++/Games/ECSmain/TanksGame/build/CMakeFiles/rebuild_cache.dir
+/home/andrew/Works_C++/Games/ECSmain/TanksGame/build/CMakeFiles/edit_cache.dir
+/home/andrew/Works_C++/Games/ECSmain/TanksGame/build/CMakeFiles/ECS.dir
